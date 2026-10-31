@@ -1,4 +1,7 @@
 export * from './journey.types'
 export * from './profile.types'
+export * from './profile.fields'
 export * from './scheme.types'
 export * from './document.types'
+export * from './subject'
+export * from './eligibility'

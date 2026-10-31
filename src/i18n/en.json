@@ -85,5 +85,13 @@
     "loadStudentBtn": "Load sample student profile",
     "startOverBtn": "Start from beginning",
     "defaultLabel": "Go to Welcome"
+  },
+  "engine": {
+    "straddlesBand": "Your income band falls across the ₹{limit} threshold. Please confirm with your income certificate.",
+    "allCriteriaMet": "All required criteria match your profile.",
+    "missingCriteria": "Some criteria need to be confirmed.",
+    "notMatchingCriteria": "Does not meet required criteria: {failedRules}.",
+    "needsVerification": "This scheme requires official verification before final determination.",
+    "demoDisclaimer": "These rules are for demonstration and are not official."
   }
 }
