@@ -9,9 +9,9 @@ import type { Language } from '../domain/journey.types'
 export function t(
   key: string,
   params?: Record<string, string | number>,
-  lang: Language = 'gu'
+  lang: Language = 'en'
 ): string {
-  const dict = translations[lang] ?? translations.gu
+  const dict = translations[lang] ?? translations.en
   const parts = key.split('.')
   let current: unknown = dict
 
@@ -44,8 +44,8 @@ export function useTranslation(): {
   setLanguage: (lang: Language) => void
 } {
   const { language, setLanguage } = useJourney()
-  const currentLang = language ?? 'gu'
-  const strings = translations[currentLang] ?? translations.gu
+  const currentLang = language ?? 'en'
+  const strings = translations[currentLang] ?? translations.en
 
   const tFn = (key: string, params?: Record<string, string | number>) =>
     t(key, params, currentLang)

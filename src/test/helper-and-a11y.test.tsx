@@ -232,7 +232,14 @@ describe('Phase 12: i18n & Accessibility Audit', () => {
       </MemoryRouter>
     )
 
-    // By default language is 'gu' in JourneyContext
+    // By default language is 'en' in JourneyContext, so flag is hidden
+    expect(screen.queryByTestId('native-review-flag')).not.toBeInTheDocument()
+
+    // Switch to Gujarati via header
+    const guBtn = screen.getByRole('button', { name: /Switch language to ગુજ|ગુજ/i })
+    fireEvent.click(guBtn)
+
+    // Flag should now appear with native review text
     const flag = screen.queryByTestId('native-review-flag')
     expect(flag).toBeInTheDocument()
     expect(flag).toHaveTextContent(/સત્તાવાર સમીક્ષા|સમીક્ષા બાકી|review/i)

@@ -17,7 +17,7 @@ function isBrowser(): boolean {
   return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
 }
 
-export function getStoredLanguage(defaultLang: Language = 'gu'): Language {
+export function getStoredLanguage(defaultLang: Language = 'en'): Language {
   if (!isBrowser()) return defaultLang
   try {
     const val = localStorage.getItem(STORAGE_KEYS.LANGUAGE)

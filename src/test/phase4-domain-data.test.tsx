@@ -21,13 +21,22 @@ describe('Phase 4 — Language Switching Integration Test', () => {
       </MemoryRouter>
     )
 
-    // Initial state is Gujarati ('gu')
+    // Initial state is English ('en')
+    expect(screen.getByText('Discover government schemes your family may qualify for.')).toBeInTheDocument()
+    expect(screen.getAllByText('Find benefits for me')[0]).toBeInTheDocument()
+    expect(screen.getByText('This is guidance. The department makes the final decision.')).toBeInTheDocument()
+
+    // Click Gujarati button in header
+    const guButton = screen.getByRole('button', { name: /Switch language to ગુજ|ગુજ/i })
+    fireEvent.click(guButton)
+
+    // Verify all major elements update to Gujarati
     expect(screen.getByText('તમારા પરિવાર માટે કઈ સરકારી યોજનાઓ છે, જાણો.')).toBeInTheDocument()
     expect(screen.getAllByText('મારા માટે યોજનાઓ શોધો')[0]).toBeInTheDocument()
     expect(screen.getByText('આ માર્ગદર્શન છે. અંતિમ નિર્ણય સંબંધિત વિભાગનો રહેશે.')).toBeInTheDocument()
 
     // Click Hindi button in header
-    const hiButton = screen.getByRole('button', { name: /हि/i })
+    const hiButton = screen.getByRole('button', { name: /Switch language to हिં|हि/i })
     fireEvent.click(hiButton)
 
     // Verify all major elements update to Hindi
@@ -39,7 +48,7 @@ describe('Phase 4 — Language Switching Integration Test', () => {
     const enButton = screen.getByRole('button', { name: /Switch language to EN/i })
     fireEvent.click(enButton)
 
-    // Verify all major elements update to English
+    // Verify all major elements update back to English
     expect(screen.getByText('Discover government schemes your family may qualify for.')).toBeInTheDocument()
     expect(screen.getAllByText('Find benefits for me')[0]).toBeInTheDocument()
     expect(screen.getByText('This is guidance. The department makes the final decision.')).toBeInTheDocument()

@@ -29,7 +29,7 @@ export interface JourneyContextValue {
 }
 
 export const defaultJourneyContext: JourneyContextValue = {
-  language: 'gu',
+  language: 'en',
   setLanguage: () => {},
   textScale: 1,
   setTextScale: () => {},

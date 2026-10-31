@@ -28,6 +28,7 @@ describe('Phase 3 — Storage Helpers', () => {
   })
 
   it('reads and writes language with safe fallback', () => {
+    expect(getStoredLanguage()).toBe('en')
     expect(getStoredLanguage('gu')).toBe('gu')
     setStoredLanguage('hi')
     expect(getStoredLanguage()).toBe('hi')

@@ -14,14 +14,14 @@ import { JourneyContext, type JourneyContextValue } from './journey-context'
 import { SAMPLE_PERSONAS } from '../data/personas'
 
 export function JourneyProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = React.useState<Language>(() => getStoredLanguage('gu'))
+  const [language, setLanguageState] = React.useState<Language>(() => getStoredLanguage('en'))
   const [textScale, setTextScaleState] = React.useState<TextScale>(() => getStoredTextScale(1))
 
   const [journey, setJourney] = React.useState<JourneyState>(() => {
     const stored = getStoredJourneyState()
     const currentProfile = stored?.currentProfile ?? null
     return {
-      language: getStoredLanguage('gu'),
+      language: getStoredLanguage('en'),
       textScale: getStoredTextScale(1),
       consentGiven: stored?.consentGiven ?? false,
       mode: stored?.mode ?? 'citizen',
@@ -56,6 +56,7 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
 
   const setLanguage = React.useCallback((lang: Language) => {
     setLanguageState(lang)
+    setJourney((prev) => ({ ...prev, language: lang }))
   }, [])
 
   const setTextScale = React.useCallback((scale: TextScale) => {
