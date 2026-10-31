@@ -1,3 +1,10 @@
+@import "@fontsource-variable/anek-latin/index.css";
+@import "@fontsource-variable/anek-latin/wdth.css";
+@import "@fontsource-variable/anek-gujarati/index.css";
+@import "@fontsource-variable/anek-gujarati/wdth.css";
+@import "@fontsource-variable/anek-devanagari/index.css";
+@import "@fontsource-variable/anek-devanagari/wdth.css";
+
 @import "tailwindcss";
 
 @theme {
@@ -30,7 +37,7 @@
 }
 
 :root {
-  --text-scale: 1;
+  --text-scale: 1;               /* 1, 1.125, 1.25 via the text-size control */
   --focus: var(--color-neel);
 }
 
@@ -42,6 +49,25 @@ body {
   background-color: var(--color-salt);
   color: var(--color-neel);
   font-family: var(--font-sans);
+  line-height: 1.6;
   margin: 0;
   min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Accessible focus ring per DESIGN.md: 3px neel outline, 3px offset */
+:focus-visible {
+  outline: 3px solid #12263F;
+  outline-offset: 3px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
