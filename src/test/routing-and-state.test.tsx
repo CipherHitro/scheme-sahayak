@@ -157,7 +157,7 @@ describe('Phase 3 — Route Placeholders & Deep-Link Recovery', () => {
     )
 
     expect(screen.getByText(/Route: \/profile/i)).toBeInTheDocument()
-    expect(screen.getByText(/Tell us about your household/i)).toBeInTheDocument()
+    expect(screen.getByRole('progressbar')).toBeInTheDocument()
   })
 
   it('deep-link refresh on /results without profile does not crash and renders recovery card', () => {

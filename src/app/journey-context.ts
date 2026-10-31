@@ -55,3 +55,6 @@ export function useJourney(): JourneyContextValue {
   const context = React.useContext(JourneyContext)
   return context ?? defaultJourneyContext
 }
+
+export { JourneyProvider } from './JourneyContext'
+
