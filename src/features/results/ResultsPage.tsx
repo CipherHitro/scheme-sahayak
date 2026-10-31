@@ -15,12 +15,14 @@ import { Button } from '../../components/ui/Button'
 import { StatusBadge } from '../../components/domain/StatusBadge'
 import { DotRow } from '../../components/domain/DotRow'
 import { SchemeRow } from '../../components/domain/SchemeRow'
+import { SubjectSwitcher } from '../../components/domain/SubjectSwitcher'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { StateRecoveryCard } from '../../components/layout/StateRecoveryCard'
 import { useJourney } from '../../app/journey-context'
 import { SCHEMES_DATASET } from '../../data/schemes'
 import { buildSubject } from '../../domain/subject'
-import { evaluateAll, sortEvaluations } from '../../domain/eligibility/evaluator'
+import { evaluateScheme, sortEvaluations } from '../../domain/eligibility/evaluator'
+import { isSchemeTargetedToSubject } from '../../domain/eligibility/targeting'
 import { explainEvaluation } from '../../domain/eligibility/explanation'
 import type { SchemeRecord, RuleEvaluation } from '../../domain/scheme.types'
 import type { LocalisedText } from '../../domain/profile.types'
@@ -31,7 +33,14 @@ export type FilterType = 'all' | 'likely' | 'possible'
 
 export const ResultsPage: FC = () => {
   const navigate = useNavigate()
-  const { currentProfile, selectedSchemeId, setSelectedSchemeId, language } = useJourney()
+  const {
+    currentProfile,
+    activeSubjectId,
+    setActiveSubjectId,
+    selectedSchemeId,
+    setSelectedSchemeId,
+    language,
+  } = useJourney()
 
   // Track initial animation state so orchestrated dots animate once per results load
   const [hasAnimated, setHasAnimated] = useState(false)
@@ -42,23 +51,44 @@ export const ResultsPage: FC = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  // Build EvaluationSubject and run deterministic evaluations (safe if currentProfile is null)
+  // Build EvaluationSubject based on activeSubjectId (Phase 8C Family Lens)
   const subject = useMemo(() => {
+    if (!currentProfile) return null
+    try {
+      return buildSubject(currentProfile, activeSubjectId)
+    } catch {
+      return buildSubject(currentProfile)
+    }
+  }, [currentProfile, activeSubjectId])
+
+  // Primary applicant for household-scoped schemes
+  const primarySubject = useMemo(() => {
     if (!currentProfile) return null
     return buildSubject(currentProfile)
   }, [currentProfile])
 
   const now = useMemo(() => new Date(), [])
 
+  // Persona targeting: student only sees student schemes, farmer only sees farmer schemes!
+  const targetedSchemes = useMemo(() => {
+    if (!subject) return SCHEMES_DATASET
+    return SCHEMES_DATASET.filter((scheme) => isSchemeTargetedToSubject(scheme, subject))
+  }, [subject])
+
   const rawEvaluations = useMemo(() => {
     if (!subject) return []
-    return evaluateAll(SCHEMES_DATASET, subject, now)
-  }, [subject, now])
+    return targetedSchemes.map((scheme) => {
+      // Individual schemes evaluate per chosen member; household schemes evaluate for primary applicant
+      const evalSubject =
+        scheme.beneficiaryScope === 'household' ? primarySubject ?? subject : subject
+      return evaluateScheme(scheme, evalSubject, now)
+    })
+  }, [targetedSchemes, subject, primarySubject, now])
 
   const sortedEvaluations = useMemo(() => {
     if (rawEvaluations.length === 0) return []
-    return sortEvaluations(rawEvaluations, SCHEMES_DATASET, language)
-  }, [rawEvaluations, language])
+    return sortEvaluations(rawEvaluations, targetedSchemes, language)
+  }, [rawEvaluations, targetedSchemes, language])
 
   // Map of scheme id to scheme record
   const schemesById = useMemo(() => {
@@ -209,16 +239,28 @@ export const ResultsPage: FC = () => {
       {/* Main Two-Pane Master-Detail Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-8 items-start">
         {/* LEFT COLUMN: Master List */}
-        <div className="space-y-6">
+        <div className="space-y-5 sm:space-y-6 min-w-0">
           {/* Header */}
-          <header className="space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-bold text-neel tracking-tight">
+          <header className="space-y-1.5 sm:space-y-2">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-neel tracking-tight">
               {t('results.title', undefined, language)}
             </h1>
-            <p className="text-sm text-ink-2 leading-relaxed max-w-prose">
+            <p className="text-xs sm:text-sm text-ink-2 leading-relaxed max-w-prose">
               {t('results.subtitle', undefined, language)}
             </p>
           </header>
+
+          {/* Phase 8C: Family Lens Subject Switcher (if profile has family members) */}
+          {currentProfile.familyMembers && currentProfile.familyMembers.length > 0 && (
+            <div className="p-3 bg-paper border border-line rounded-[12px]">
+              <SubjectSwitcher
+                profile={currentProfile}
+                activeSubjectId={activeSubjectId}
+                onSelectSubject={setActiveSubjectId}
+                language={language}
+              />
+            </div>
+          )}
 
           {/* Filter Chips */}
           <div
@@ -231,7 +273,7 @@ export const ResultsPage: FC = () => {
               onClick={() => setActiveFilter('all')}
               aria-pressed={activeFilter === 'all'}
               className={cn(
-                'min-h-[44px] px-4 rounded-full text-sm font-semibold transition-colors cursor-pointer select-none',
+                'min-h-[44px] px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-semibold transition-colors cursor-pointer select-none',
                 activeFilter === 'all'
                   ? 'bg-neel text-paper border border-neel shadow-none'
                   : 'bg-paper text-neel border border-line hover:bg-salt'
@@ -245,7 +287,7 @@ export const ResultsPage: FC = () => {
               onClick={() => setActiveFilter('likely')}
               aria-pressed={activeFilter === 'likely'}
               className={cn(
-                'min-h-[44px] px-4 rounded-full text-sm font-semibold transition-colors cursor-pointer select-none',
+                'min-h-[44px] px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-semibold transition-colors cursor-pointer select-none',
                 activeFilter === 'likely'
                   ? 'bg-neel text-paper border border-neel shadow-none'
                   : 'bg-paper text-neel border border-line hover:bg-salt'
@@ -259,7 +301,7 @@ export const ResultsPage: FC = () => {
               onClick={() => setActiveFilter('possible')}
               aria-pressed={activeFilter === 'possible'}
               className={cn(
-                'min-h-[44px] px-4 rounded-full text-sm font-semibold transition-colors cursor-pointer select-none',
+                'min-h-[44px] px-3.5 sm:px-4 rounded-full text-xs sm:text-sm font-semibold transition-colors cursor-pointer select-none',
                 activeFilter === 'possible'
                   ? 'bg-neel text-paper border border-neel shadow-none'
                   : 'bg-paper text-neel border border-line hover:bg-salt'

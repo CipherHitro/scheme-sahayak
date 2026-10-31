@@ -113,7 +113,20 @@
     "title": "Scheme Criteria and Required Documents",
     "subtitle": "Clear breakdown of eligibility rules, official guidelines, and required certificates.",
     "checkDocumentsBtn": "Check required documents",
-    "openPortalBtn": "Open official application portal"
+    "openPortalBtn": "Open official application portal",
+    "seeChecklistBtn": "See my checklist",
+    "reportOutdatedBtn": "Report outdated information",
+    "reportSheetTitle": "Report outdated or incorrect information",
+    "reportSheetDesc": "Please note: this report is stored locally for demonstration purposes only. It is not submitted to government departments.",
+    "reportNotePlaceholder": "Describe which criterion, document, or step appears outdated...",
+    "reportSubmitBtn": "Record note locally",
+    "reportSuccessMsg": "Feedback recorded locally for this session.",
+    "applicationStepsTitle": "Official application steps",
+    "criteriaSummaryTitle": "Eligibility Criteria Breakdown",
+    "yourValueLabel": "Your answer",
+    "notProvided": "Not provided",
+    "officialVerificationNote": "These rules are for demonstration and are not official.",
+    "backToResults": "Back to results"
   },
   "documents": {
     "title": "Synthetic Document Evidence Demo",

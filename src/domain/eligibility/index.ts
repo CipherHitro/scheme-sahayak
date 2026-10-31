@@ -8,3 +8,4 @@ export {
 } from './evaluator'
 
 export { explainEvaluation } from './explanation'
+export { isSchemeTargetedToSubject } from './targeting'
