@@ -90,7 +90,7 @@ export function WelcomePage() {
             {t.welcome.findBenefitsBtn}
           </Button>
 
-          {/* Voice Prompt Action (Accessible speech feature or honest notice) */}
+          {/* Voice Prompt Action */}
           <Button
             fullWidth
             size="default"
@@ -104,9 +104,22 @@ export function WelcomePage() {
           {showVoiceNotice && (
             <div
               role="alert"
-              className="p-3 bg-paper border border-line rounded-[10px] text-xs text-ink-2 leading-relaxed animate-in fade-in duration-200"
+              className="p-4 bg-paper border border-line rounded-[10px] text-xs sm:text-sm text-ink-2 leading-relaxed space-y-2 animate-in fade-in duration-200"
             >
-              {t.welcome.voiceTuningNotice}
+              <p className="font-semibold text-neel">
+                {t.voice.voiceAssistant}
+              </p>
+              <p>{t.voice.experimentalNotice}</p>
+              <div className="pt-1">
+                <Button
+                  size="compact"
+                  variant="primary"
+                  icon={<ArrowRight />}
+                  onClick={handleStartCitizen}
+                >
+                  {t.welcome.findBenefitsBtn}
+                </Button>
+              </div>
             </div>
           )}
 

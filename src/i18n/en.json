@@ -237,5 +237,27 @@
   "localeMeta": {
     "nativeReviewNotice": "Gujarati and Hindi strings are prototype translations pending native-speaker sign-off.",
     "nativeReviewBadge": "Review pending"
+  },
+  "voice": {
+    "voiceAssistant": "Voice Input Assistant",
+    "speakAnswerTitle": "Speak your answer",
+    "listeningIn": "Listening in {language}",
+    "unsupportedTitle": "Speech recognition not supported",
+    "unsupportedNotice": "Your browser does not support Web Speech recognition. Please use the button controls on screen.",
+    "permissionDeniedTitle": "Microphone permission denied",
+    "permissionDeniedNotice": "Microphone access was denied. Please enable microphone permissions in your browser address bar, or use the button controls.",
+    "noSpeechNotice": "No speech detected. Please speak clearly or choose from the options below.",
+    "listening": "Listening...",
+    "speakNow": "Speak now into your device microphone.",
+    "stopListening": "Stop listening",
+    "youSaid": "You said",
+    "matchedOptionLabel": "Matched option",
+    "confirmAnswer": "Yes, use this answer",
+    "noMatchDesc": "We could not automatically match your speech. Please select your answer from the options below:",
+    "tryAgain": "Try speaking again",
+    "startSpeaking": "Start speaking",
+    "experimentalNotice": "Web Speech Prototype: Recognition accuracy depends on browser language models. Touch controls remain fully available.",
+    "readQuestion": "Listen to question",
+    "stopReading": "Stop reading"
   }
 }

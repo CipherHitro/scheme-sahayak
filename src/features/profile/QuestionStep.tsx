@@ -1,8 +1,16 @@
 import { useState } from 'react'
-import { ArrowLeft, ArrowRight, Microphone } from '@phosphor-icons/react'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Microphone,
+  SpeakerHigh,
+  Stop,
+} from '@phosphor-icons/react'
 import { Button } from '../../components/ui/Button'
 import type { QuestionDef } from '../../domain/question.defs'
 import { useTranslation } from '../../i18n'
+import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis'
+import { VoiceInputModal } from '../voice/VoiceInputModal'
 import { cn } from '../../lib/utils'
 
 export interface QuestionStepProps {
@@ -27,10 +35,22 @@ export function QuestionStep({
   isLastQuestion,
 }: QuestionStepProps) {
   const { t, language } = useTranslation()
-  const [showVoiceNotice, setShowVoiceNotice] = useState(false)
+  const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false)
+  const { isSupported: isTtsSupported, isSpeaking, speak, stop } = useSpeechSynthesis(language)
 
   const progressPercent = Math.min(100, Math.round((currentNumber / totalQuestions) * 100))
   const isAnswered = value !== undefined
+
+  const questionTitle = question.title[language] ?? question.title.en
+  const helperText = question.helperText ? (question.helperText[language] ?? question.helperText.en) : ''
+
+  const handleToggleSpeech = () => {
+    if (isSpeaking) {
+      stop()
+    } else {
+      speak(`${questionTitle}. ${helperText}`, language)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -40,7 +60,7 @@ export function QuestionStep({
           <button
             type="button"
             onClick={onBack}
-            className="flex items-center gap-1.5 text-neel hover:underline cursor-pointer py-1"
+            className="flex items-center gap-1.5 text-neel hover:underline cursor-pointer py-1 min-h-[48px]"
           >
             <ArrowLeft className="size-4" />
             <span>{t.common.back}</span>
@@ -52,14 +72,44 @@ export function QuestionStep({
               .replace('{total}', String(totalQuestions))}
           </span>
 
-          <button
-            type="button"
-            onClick={() => setShowVoiceNotice((prev) => !prev)}
-            aria-label="Speak your answer"
-            className="p-1.5 rounded-[8px] text-neel hover:bg-salt-2 transition-colors cursor-pointer"
-          >
-            <Microphone className="size-4 text-neel" />
-          </button>
+          <div className="flex items-center gap-1">
+            {/* Read-Aloud Action with Visible Stop Control */}
+            {isTtsSupported && (
+              <button
+                type="button"
+                onClick={handleToggleSpeech}
+                aria-label={isSpeaking ? t.voice.stopReading : t.voice.readQuestion}
+                className={cn(
+                  'px-2.5 py-1.5 rounded-[8px] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer min-h-[48px]',
+                  isSpeaking
+                    ? 'bg-madder-soft text-madder border border-madder/40'
+                    : 'text-neel hover:bg-salt-2 border border-transparent'
+                )}
+              >
+                {isSpeaking ? (
+                  <>
+                    <Stop className="size-4 shrink-0" weight="fill" aria-hidden="true" />
+                    <span>{t.voice.stopReading}</span>
+                  </>
+                ) : (
+                  <>
+                    <SpeakerHigh className="size-4 shrink-0" aria-hidden="true" />
+                    <span className="hidden sm:inline">{t.voice.readQuestion}</span>
+                  </>
+                )}
+              </button>
+            )}
+
+            {/* Voice Input Modal Trigger */}
+            <button
+              type="button"
+              onClick={() => setIsVoiceModalOpen(true)}
+              aria-label={t.voice.speakAnswerTitle}
+              className="p-2 rounded-[8px] text-neel hover:bg-salt-2 transition-colors cursor-pointer min-h-[48px] min-w-[48px] flex items-center justify-center"
+            >
+              <Microphone className="size-5 text-neel" aria-hidden="true" />
+            </button>
+          </div>
         </div>
 
         {/* 4px Haldi Progress Bar */}
@@ -77,23 +127,14 @@ export function QuestionStep({
         </div>
       </div>
 
-      {showVoiceNotice && (
-        <div
-          role="alert"
-          className="p-3 bg-paper border border-line rounded-[10px] text-xs text-ink-2 leading-relaxed animate-in fade-in duration-200"
-        >
-          {t.profile.voiceNotice}
-        </div>
-      )}
-
       {/* Large Question Headline & Helper */}
       <header className="space-y-2">
         <h1 className="text-2xl sm:text-3xl font-bold text-neel tracking-tight leading-[1.2]">
-          {question.title[language] ?? question.title.en}
+          {questionTitle}
         </h1>
-        {question.helperText && (
+        {helperText && (
           <p className="text-sm text-ink-2 leading-relaxed">
-            {question.helperText[language] ?? question.helperText.en}
+            {helperText}
           </p>
         )}
       </header>
@@ -170,6 +211,19 @@ export function QuestionStep({
           {isLastQuestion ? t.profile.reviewProfileBtn : t.profile.nextQuestion}
         </Button>
       </div>
+
+      {/* Voice Input Modal */}
+      <VoiceInputModal
+        isOpen={isVoiceModalOpen}
+        onClose={() => setIsVoiceModalOpen(false)}
+        questionTitle={questionTitle}
+        options={question.options}
+        onConfirmAnswer={(val) => {
+          onSelectAnswer(val)
+          setIsVoiceModalOpen(false)
+        }}
+        language={language}
+      />
     </div>
   )
 }
