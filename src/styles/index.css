@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  --color-salt: #F2F3EF;
+  --color-paper: #FFFFFF;
+  --color-salt-2: #E7E9E3;
+  --color-line: #D3D7CF;
+  --color-neel: #12263F;
+  --color-neel-700: #1D3857;
+  --color-neel-soft: #DCE4EE;
+  --color-ink-2: #44566B;
+  --color-haldi: #E0A526;
+  --color-haldi-ink: #774F00;
+  --color-haldi-soft: #FAEBC4;
+  --color-madder: #A6392B;
+  --color-madder-soft: #F5DFDA;
+  --color-mor: #1B6B5A;
+  --color-mor-soft: #DBEDE6;
+
+  --font-sans: "Anek Latin Variable", "Anek Gujarati Variable", "Anek Devanagari Variable",
+               "Noto Sans Gujarati", "Noto Sans Devanagari", system-ui, sans-serif;
+
+  --radius-control: 10px;
+  --radius-panel: 14px;
+  --radius-sheet: 22px;
+
+  --shadow-sheet: 0 -14px 34px -14px rgb(18 38 63 / 0.22);
+
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+:root {
+  --text-scale: 1;
+  --focus: var(--color-neel);
+}
+
+html {
+  font-size: calc(100% * var(--text-scale));
+}
+
+body {
+  background-color: var(--color-salt);
+  color: var(--color-neel);
+  font-family: var(--font-sans);
+  margin: 0;
+  min-height: 100vh;
+}
