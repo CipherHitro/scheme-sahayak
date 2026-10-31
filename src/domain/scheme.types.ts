@@ -1,16 +1,19 @@
-import type { Language } from './journey.types'
-import type { BeneficiaryProfile } from './profile.types'
+import type { Language, LocalisedText, RuleField } from './profile.types'
+import type { SchemeDocumentRequirement } from './document.types'
+
+// Re-export document types for convenience if needed
+export type { DocumentStatus, SchemeDocumentRequirement } from './document.types'
 
 export type RuleOperator = 'eq' | 'lte' | 'gte' | 'in' | 'exists'
 
 export interface SchemeRule {
   id: string
-  field: keyof BeneficiaryProfile
+  field: RuleField
   operator: RuleOperator
   value?: string | number | string[]
   mandatory: boolean
-  label: Record<Language, string>
-  explanation?: Record<Language, string>
+  label: LocalisedText
+  explanation?: LocalisedText
 }
 
 export type VerificationStatus = 'verified' | 'needs_review' | 'demo_placeholder'
@@ -21,44 +24,38 @@ export type CheckResult = 'pass' | 'fail' | 'unknown'
 
 export interface RuleEvaluation {
   ruleId: string
+  field: RuleField
   result: CheckResult
   actualValue: unknown
   expectedValue: unknown
   mandatory: boolean
+  reasonCode?: 'straddles_band' | 'missing_value' | 'invalid_value'
 }
 
 export interface SchemeEvaluation {
   schemeId: string
+  subjectId: string
   state: EligibilityState
   checks: RuleEvaluation[]
   passedCount: number
   unknownCount: number
   failedCount: number
   totalCount: number
+  dataStatus: VerificationStatus
   explanation: string
-}
-
-export type DocumentStatus = 'ready' | 'missing' | 'unknown'
-
-export interface SchemeDocumentRequirement {
-  id: string
-  name: Record<Language, string>
-  helpText: Record<Language, string>
-  required: boolean
-  issuingAuthority?: Record<Language, string>
-  whereToGet?: Record<Language, string[]>
 }
 
 export interface SchemeRecord {
   id: string
-  name: Record<Language, string>
-  department: Record<Language, string>
-  summary: Record<Language, string>
-  benefitDescription: Record<Language, string>
+  name: LocalisedText
+  department: LocalisedText
+  summary: LocalisedText
+  benefitDescription: LocalisedText
+  beneficiaryScope: 'individual' | 'household'
   rules: SchemeRule[]
   requiredDocuments: SchemeDocumentRequirement[]
   applicationSteps: Record<Language, string[]>
-  applicationUrl: string
+  applicationUrl: string | null
   sourceUrl: string
   lastVerifiedAt: string | null
   version: string

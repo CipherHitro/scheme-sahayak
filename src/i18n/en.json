@@ -1,0 +1,89 @@
+{
+  "banner": {
+    "prototypeNotice": "Prototype: sample data and simulated document reading."
+  },
+  "common": {
+    "appName": "Gujarat SchemeSahayak",
+    "guidanceDisclaimer": "This is guidance. The department makes the final decision.",
+    "privacyNotice": "We never ask for your OTP, password or real Aadhaar number.",
+    "startOver": "Start over / Clear demo data",
+    "back": "Back",
+    "next": "Next",
+    "continue": "Continue",
+    "close": "Close",
+    "forJudges": "For judges and testers (Synthetic shortcuts)",
+    "sampleStudent": "Sample Student",
+    "sampleFarmer": "Sample Farmer",
+    "sampleSenior": "Sample Senior",
+    "language": "Language",
+    "textSize": "Text size"
+  },
+  "welcome": {
+    "headline": "Discover government schemes your family may qualify for.",
+    "description": "Answer a few simple questions. We show what may fit, why, and what evidence you need to bring to the official portal.",
+    "findBenefitsBtn": "Find benefits for me",
+    "helpSomeoneBtn": "Help someone else",
+    "speakAnswerBtn": "Speak in your language",
+    "shortcutsTitle": "Quick synthetic shortcuts for judges"
+  },
+  "consent": {
+    "title": "Privacy and Demo Consent",
+    "description": "What we ask, what we do with it, and what we never do.",
+    "localProcessingTitle": "Local browser processing only",
+    "localProcessingDesc": "All profile answers and scheme rules are evaluated entirely inside your browser. No personal data is uploaded to cloud servers.",
+    "noCredentialsTitle": "No sensitive credentials collected",
+    "noCredentialsDesc": "We never collect OTPs, passwords, bank credentials, or real Aadhaar cards.",
+    "checkboxLabel": "I understand this is a guidance prototype and consent to continue.",
+    "continueBtn": "Continue to profile"
+  },
+  "profile": {
+    "title": "Tell us about your household",
+    "subtitle": "Questions map directly to criteria evaluated by Gujarat government schemes.",
+    "activeSelection": "Active Profile Selection:",
+    "viewResultsBtn": "View matched schemes",
+    "placeholderNote": "Choose a test persona below to inspect the journey with synthetic data."
+  },
+  "results": {
+    "title": "Matching benefits for your household",
+    "subtitle": "Evaluated using our local deterministic rules engine against verified scheme criteria.",
+    "viewSchemeBtn": "View scheme criteria & evidence",
+    "profileMissingTitle": "Profile answers not found",
+    "profileMissingDesc": "To evaluate schemes, SchemeSahayak needs your household answers. Please start from the beginning.",
+    "goToProfileBtn": "Go to Profile"
+  },
+  "schemeDetail": {
+    "title": "Scheme Criteria and Required Documents",
+    "subtitle": "Clear breakdown of eligibility rules, official guidelines, and required certificates.",
+    "checkDocumentsBtn": "Check required documents",
+    "openPortalBtn": "Open official application portal"
+  },
+  "documents": {
+    "title": "Synthetic Document Evidence Demo",
+    "subtitle": "Real uploads are disabled. Use the synthetic sample document to preview evidence extraction.",
+    "viewChecklistBtn": "View final readiness checklist"
+  },
+  "checklist": {
+    "title": "Readiness Checklist",
+    "subtitle": "Prepare required documents before continuing on the official portal.",
+    "summaryTitle": "Preparation Status",
+    "readyCount": "Ready documents",
+    "missingCount": "Missing documents",
+    "openOfficialPortal": "Open official portal (Digital Gujarat)",
+    "printChecklist": "Print checklist"
+  },
+  "helper": {
+    "title": "Helper Mode: Beneficiary Households",
+    "subtitle": "Assisted workflow for CSC operators, e-Gram staff, and NGO workers assisting families with consent.",
+    "screenedToday": "Households Screened Today (Sample Data)",
+    "missingDocsNote": "documents missing across records",
+    "addFamilyBtn": "Add new family"
+  },
+  "recovery": {
+    "title": "Profile answers not found",
+    "description": "To view {requiredFor}, SchemeSahayak needs your answers to evaluate eligibility. Please start from Welcome or test with sample data.",
+    "testPrompt": "Testing or evaluating this view directly?",
+    "loadStudentBtn": "Load sample student profile",
+    "startOverBtn": "Start from beginning",
+    "defaultLabel": "Go to Welcome"
+  }
+}

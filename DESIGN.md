@@ -334,6 +334,10 @@ Implement each in `src/components/ui` (generic) or `src/components/domain` (prod
 
 **ExtractedFieldsPanel:** after the simulated scan: a 14px-radius `paper` panel listing each extracted field as label and value, an "Is this correct?" pair of buttons ("Yes, use these" primary, "Fix a value" secondary), and a final line with a `LockKey` icon: "We read these fields only. The file is deleted." Then, after confirmation, a calm confirmation line "File deleted from this session."
 
+**SubjectSwitcher (Family lens):** a horizontally scrollable row of chips above Results, labelled "For:" and then each family member's first name (chip height 44px, full radius, selected = `neel` fill with white text). Shows only when the profile has family members. Each chip has the member's relationship in its accessible name. Switching recomputes results; no animation other than the normal Dot-row fill on first load.
+
+**Data status text:** each SchemeRow and detail header shows exactly one of: "Checked on {date}" (verified, `ink-2` small text), the **Demo data** tag (`haldi-soft` plane, `haldi-ink` text, `Flask` or `Warning` icon from Phosphor), or the **Needs checking** state badge. Demo data never replaces the eligibility StatusBadge; it sits beside it.
+
 **ProfileSummary:** compact panel listing answers with an edit link per row.
 
 **Banner (prototype):** as in 5.3. **DemoDataBadge:** a small `haldi-soft` tag "Demo data" on any scheme whose `verification.status` is `demo_placeholder`.

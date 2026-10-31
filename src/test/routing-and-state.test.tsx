@@ -171,8 +171,8 @@ describe('Phase 3 — Route Placeholders & Deep-Link Recovery', () => {
       </MemoryRouter>
     )
 
-    expect(screen.getByText(/Profile answers not found/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Load sample student profile/i })).toBeInTheDocument()
+    expect(screen.getByText(/Profile answers not found|પ્રોફાઇલ જવાબો મળ્યા નથી/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Load sample student profile|વિદ્યાર્થી નમૂનો લોડ કરો/i })).toBeInTheDocument()
   })
 
   it('deep-link refresh on /schemes/:schemeId without profile renders recovery card', () => {
@@ -186,8 +186,8 @@ describe('Phase 3 — Route Placeholders & Deep-Link Recovery', () => {
       </MemoryRouter>
     )
 
-    expect(screen.getByText(/Profile answers not found/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Load sample student profile/i })).toBeInTheDocument()
+    expect(screen.getByText(/Profile answers not found|પ્રોફાઇલ જવાબો મળ્યા નથી/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Load sample student profile|વિદ્યાર્થી નમૂનો લોડ કરો/i })).toBeInTheDocument()
   })
 
   it('deep-link refresh on /documents/:schemeId without profile renders recovery card', () => {
@@ -201,7 +201,7 @@ describe('Phase 3 — Route Placeholders & Deep-Link Recovery', () => {
       </MemoryRouter>
     )
 
-    expect(screen.getByText(/Profile answers not found/i)).toBeInTheDocument()
+    expect(screen.getByText(/Profile answers not found|પ્રોફાઇલ જવાબો મળ્યા નથી/i)).toBeInTheDocument()
   })
 
   it('deep-link refresh on /checklist/:schemeId without profile renders recovery card', () => {
@@ -215,7 +215,7 @@ describe('Phase 3 — Route Placeholders & Deep-Link Recovery', () => {
       </MemoryRouter>
     )
 
-    expect(screen.getByText(/Profile answers not found/i)).toBeInTheDocument()
+    expect(screen.getByText(/Profile answers not found|પ્રોફાઇલ જવાબો મળ્યા નથી/i)).toBeInTheDocument()
   })
 
   it('renders HelperPage on /helper', () => {

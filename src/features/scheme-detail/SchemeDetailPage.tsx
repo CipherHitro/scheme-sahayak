@@ -67,7 +67,7 @@ export function SchemeDetailPage() {
           <h2 className="text-sm font-semibold text-neel">Evaluation Summary for {currentProfile.displayName}</h2>
           <ul className="text-sm text-ink-2 space-y-2 list-disc list-inside">
             <li>Matched condition: Gujarat resident ({currentProfile.residenceState})</li>
-            <li>Matched condition: Enrolled course ({currentProfile.course ?? 'Student'})</li>
+            <li>Matched condition: Education level ({currentProfile.educationLevel ?? 'Student'})</li>
             <li>Evidence required: Income certificate under ₹2.5 lakh</li>
           </ul>
         </div>

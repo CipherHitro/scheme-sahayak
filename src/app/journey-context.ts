@@ -5,6 +5,7 @@ import type {
   JourneyMode,
   BeneficiaryProfile,
 } from '../domain/journey.types'
+import type { DocumentTypeId } from '../domain/document.types'
 
 export interface JourneyContextValue {
   language: Language
@@ -17,10 +18,12 @@ export interface JourneyContextValue {
   setMode: (mode: JourneyMode) => void
   currentProfile: BeneficiaryProfile | null
   setCurrentProfile: (profile: BeneficiaryProfile | null) => void
+  activeSubjectId: string
+  setActiveSubjectId: (subjectId: string) => void
   selectedSchemeId: string | null
   setSelectedSchemeId: (schemeId: string | null) => void
-  documentConfirmations: Record<string, boolean>
-  confirmDocument: (docId: string, confirmed?: boolean) => void
+  documentConfirmations: Partial<Record<DocumentTypeId, boolean>>
+  confirmDocument: (docTypeId: DocumentTypeId, confirmed?: boolean) => void
   resetJourney: () => void
   loadSamplePersona: (persona: 'student' | 'farmer' | 'senior') => void
 }
@@ -36,6 +39,8 @@ export const defaultJourneyContext: JourneyContextValue = {
   setMode: () => {},
   currentProfile: null,
   setCurrentProfile: () => {},
+  activeSubjectId: 'self',
+  setActiveSubjectId: () => {},
   selectedSchemeId: null,
   setSelectedSchemeId: () => {},
   documentConfirmations: {},

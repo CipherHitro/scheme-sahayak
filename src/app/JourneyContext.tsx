@@ -1,5 +1,6 @@
 import * as React from 'react'
 import type { Language, TextScale, JourneyMode, BeneficiaryProfile, JourneyState } from '../domain/journey.types'
+import type { DocumentTypeId } from '../domain/document.types'
 import {
   getStoredLanguage,
   setStoredLanguage,
@@ -18,12 +19,14 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
 
   const [journey, setJourney] = React.useState<JourneyState>(() => {
     const stored = getStoredJourneyState()
+    const currentProfile = stored?.currentProfile ?? null
     return {
       language: getStoredLanguage('gu'),
       textScale: getStoredTextScale(1),
       consentGiven: stored?.consentGiven ?? false,
       mode: stored?.mode ?? 'citizen',
-      currentProfile: stored?.currentProfile ?? null,
+      currentProfile,
+      activeSubjectId: stored?.activeSubjectId ?? (currentProfile?.id ?? 'self'),
       selectedSchemeId: stored?.selectedSchemeId ?? null,
       documentConfirmations: stored?.documentConfirmations ?? {},
     }
@@ -45,6 +48,7 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
       consentGiven: journey.consentGiven,
       mode: journey.mode,
       currentProfile: journey.currentProfile,
+      activeSubjectId: journey.activeSubjectId,
       selectedSchemeId: journey.selectedSchemeId,
       documentConfirmations: journey.documentConfirmations,
     })
@@ -67,19 +71,27 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const setCurrentProfile = React.useCallback((profile: BeneficiaryProfile | null) => {
-    setJourney((prev) => ({ ...prev, currentProfile: profile }))
+    setJourney((prev) => ({
+      ...prev,
+      currentProfile: profile,
+      activeSubjectId: profile ? profile.id : 'self',
+    }))
+  }, [])
+
+  const setActiveSubjectId = React.useCallback((subjectId: string) => {
+    setJourney((prev) => ({ ...prev, activeSubjectId: subjectId }))
   }, [])
 
   const setSelectedSchemeId = React.useCallback((schemeId: string | null) => {
     setJourney((prev) => ({ ...prev, selectedSchemeId: schemeId }))
   }, [])
 
-  const confirmDocument = React.useCallback((docId: string, confirmed = true) => {
+  const confirmDocument = React.useCallback((docTypeId: DocumentTypeId, confirmed = true) => {
     setJourney((prev) => ({
       ...prev,
       documentConfirmations: {
         ...prev.documentConfirmations,
-        [docId]: confirmed,
+        [docTypeId]: confirmed,
       },
     }))
   }, [])
@@ -92,6 +104,7 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
       consentGiven: false,
       mode: 'citizen',
       currentProfile: null,
+      activeSubjectId: 'self',
       selectedSchemeId: null,
       documentConfirmations: {},
     })
@@ -103,6 +116,7 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
       ...prev,
       consentGiven: true,
       currentProfile: profile,
+      activeSubjectId: profile.id,
       mode: 'citizen',
     }))
   }, [])
@@ -119,6 +133,8 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
       setMode,
       currentProfile: journey.currentProfile,
       setCurrentProfile,
+      activeSubjectId: journey.activeSubjectId,
+      setActiveSubjectId,
       selectedSchemeId: journey.selectedSchemeId,
       setSelectedSchemeId,
       documentConfirmations: journey.documentConfirmations,
@@ -135,6 +151,7 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
       setConsentGiven,
       setMode,
       setCurrentProfile,
+      setActiveSubjectId,
       setSelectedSchemeId,
       confirmDocument,
       resetJourney,

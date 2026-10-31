@@ -38,7 +38,7 @@ For each requested phase:
 6. List remaining limitations honestly.
 7. Do not proceed to the next phase unless I ask.
 
-Never invent scheme rules, thresholds, benefits, documents, dates, source links or impact statistics. Unverified records must be labelled demo data. Never collect real personal documents or identifiers.
+Never invent scheme rules, thresholds, benefits, documents, dates, source links or impact statistics. All user-facing strings must use typed locale keys from the start; never hard-code visible text in components. The field registry in src/domain/profile.fields.ts is the single source for profile questions, rule validation and the evaluator. Unverified records must be labelled demo data. Never collect real personal documents or identifiers.
 
 Follow DESIGN.md precisely: Rann and Ajrakh palette, Anek type, Phosphor icons, ledger rows, Dot-row, no gradients, no glassmorphism, no emoji, no unnecessary shadows, mobile-first and accessible Gujarati/Hindi. No generic AI dashboard design.
 ```
@@ -89,10 +89,14 @@ No real Aadhaar, caste, bank, income or disability documents. Do not ask judges 
 | 2 | Design tokens, fonts and app shell | Required |
 | 3 | Routes and journey state | Required |
 | 4 | Typed domain models and synthetic data | Required |
+| **4R** | **Domain retrofit** (only if Phase 4 was built from the older types) | Required if applicable |
+| **4H** | **Human task: choose and verify 6–10 schemes** (runs in parallel, blocks Phase 8) | Critical |
 | 5 | Deterministic eligibility engine + tests | Critical |
 | 6 | Welcome and consent | Required |
 | 7 | Guided profile flow | Required |
-| 8 | Results and scheme detail | Critical |
+| 8A | Results list, Dot-row and master-detail | Critical |
+| 8B | Scheme detail | Critical |
+| 8C | Family lens (per-member results) | Should have |
 | 9 | Synthetic document demonstration | Required |
 | 10 | Readiness checklist and official hand-off | Critical |
 | 11 | Helper mode | Should have |
@@ -101,7 +105,7 @@ No real Aadhaar, caste, bank, income or disability documents. Do not ask judges 
 | 14 | Polish, tests, README and deployment | Required |
 | 15 | Demo rehearsal | Required |
 
-If time is short, complete 1–10 and 14 first. Helper mode next. Voice last. Never sacrifice the rules engine to add voice effects.
+If time is short, complete 1–10 and 14 first. Then 8C and 11. Voice last. Never sacrifice the rules engine or the verified data to add effects.
 
 ---
 
@@ -212,25 +216,88 @@ Deep-link refresh must not crash. Missing journey state must show a recovery act
 
 # PHASE 4 — Domain types and synthetic data
 
-**Goal:** typed contracts and sample personas/families/schemes.
+**Goal:** typed contracts, field registry and sample personas, families and schemes (AGENT.md sections 7 and 17).
 
-**Prompt:**
+**Prompt (fresh build):**
 ```text
-PHASE 4 — DOMAIN TYPES AND SYNTHETIC DATA.
+PHASE 4 — DOMAIN TYPES, FIELD REGISTRY AND SYNTHETIC DATA.
 
-Implement the domain contracts in AGENT.md for profiles, family members, scheme records/rules, verification status, eligibility results and document readiness.
+Implement AGENT.md section 7 exactly: PersonFacts, HouseholdFacts, FamilyMember, BeneficiaryProfile, EvaluationSubject, RuleField, SchemeRule, DocumentTypeId, DocumentCatalogEntry, SchemeDocumentRequirement, SampleDocument, SchemeRecord, evaluation result types.
 
 Create:
-- 3 fictional personas: student, farmer, senior/widow;
-- 3 fictional helper-family records;
-- a small local scheme dataset with en/gu/hi display strings.
+- src/domain/profile.fields.ts: the PROFILE_FIELDS registry, plus income band ranges as one constant.
+- src/data/documentCatalog.ts: canonical document types with en/gu/hi names.
+- 3 fictional personas (student, farmer, senior/widow), each with 0-2 fictional family members.
+- 3 fictional helper families.
+- A small scheme dataset (6-10 records). Records not yet human-verified must be demo_placeholder or needs_review.
+- Zod validation at the data boundary: every rule's field/operator/value must be compatible with the registry; every scheme must have at least one mandatory rule; every language key present; applicationUrl is null or a real https URL; lastVerifiedAt is null unless status is verified.
+- docs/DATA_VERIFICATION.md listing every record and what a human must verify.
 
-Do not invent eligibility thresholds, benefits, deadlines, required documents or links. Every verified scheme needs an official source URL, department, actual last-verified date and version. If not verified, mark it demo_placeholder / needs_review and show Demo data. Do not pretend a placeholder is official.
-
-Prefer 6–10 accurate records over 25 fabricated ones. The PPT's 15–25 is a target for hand-verified records, not permission to invent. Add data validation/tests and a note listing what needs human verification. No screens yet.
+Do not invent eligibility thresholds, benefits, deadlines, documents, where-to-get steps or links. Placeholder values must be obviously generic and flagged Demo data. No screens, no engine. Add tests for validation. Run all quality commands.
 ```
 
-**Human task:** open every official source and verify it yourself. Record the actual date. If uncertain, leave it marked demo.
+## PHASE 4R — Domain retrofit (one-shot)
+
+Use this if you already built Phase 4 from the earlier types. Paste it once, review the audit and the diff, run the checks, commit.
+
+```text
+PHASE 4R — DOMAIN RETROFIT. PHASES 0-4 ARE ALREADY BUILT. DO NOT BUILD THE ENGINE, ANY SCREEN OR ANY LATER PHASE.
+
+Re-read the revised AGENT.md (sections 4, 5, 6, 7, 8, 17). Update the existing code to match it without changing any visual design.
+
+STEP 0 - AUDIT (print a short summary first, then continue without waiting):
+List the current domain types, data files, journey state shape, storage keys, i18n setup, scripts and tests, and every difference from the revised AGENT.md section 7.
+
+STEP 1 - TYPES AND REGISTRY
+- Replace the profile/scheme/document types with AGENT.md section 7: PersonFacts, HouseholdFacts, FamilyMember, BeneficiaryProfile, EvaluationSubject, RuleField (restricted union, never id/displayName/familyMembers), LocalisedText, DocumentTypeId, SchemeDocumentRequirement (documentTypeId, whereToGet, issuingAuthority), SampleDocument, SchemeRecord (beneficiaryScope, applicationUrl nullable), SchemeEvaluation (subjectId, dataStatus, reasonCode).
+- Create src/domain/profile.fields.ts with the PROFILE_FIELDS registry (scope, kind, allowedValues, unknown value) and one INCOME_BAND_RANGES constant: under_1l [0,100000], 1l_2_5l (100000,250000], 2_5l_5l (250000,500000], above_5l (500000,infinity).
+- Create src/domain/subject.ts with a pure buildSubject(profile, memberId?) that merges household facts with the chosen person's facts and returns an EvaluationSubject. Add tests.
+
+STEP 2 - DATA MIGRATION
+- Create src/data/documentCatalog.ts (canonical documents with en/gu/hi names). Only include document types the current schemes actually use plus income_certificate and marksheet (needed for the sample documents).
+- Migrate existing personas, helper families and schemes to the new shapes. Replace free-text course/institution with the educationLevel/institutionType enums. Add gender, maritalStatus, ownsAgriculturalLand and rationCardType to personas (values must make sense for student, farmer and widow personas; use "unknown" where not needed).
+- Change any numeric income rule to field annualHouseholdIncome with a numeric limit (band semantics are applied later by the engine).
+- Do NOT invent or alter any threshold, benefit, document, date or URL. Keep existing values; mark records demo_placeholder or needs_review unless a human verification note already exists. Where a record used a field that is now not allowed, flag it in docs/DATA_VERIFICATION.md instead of guessing.
+- Add Zod validation at the data boundary (field/operator/value compatible with the registry; at least one mandatory rule per scheme; all three languages present; applicationUrl null or https; lastVerifiedAt null unless verified). Make the app fail loudly in dev/test on invalid data.
+- Create or update docs/DATA_VERIFICATION.md: one row per scheme with source URL, status, what a human must verify, and open questions.
+
+STEP 3 - JOURNEY STATE AND STORAGE
+- Add activeSubjectId (default primary applicant) and document readiness keyed by canonical documentTypeId to the typed journey state.
+- Add a storage schema version. If persisted state is old, invalid or corrupt, discard it silently and start clean. Add tests for this.
+
+STEP 4 - I18N CHECK
+- If typed locale infrastructure exists, keep it. If not, create the in-house typed t(key, params?) over en.json/gu.json/hi.json described in AGENT.md section 4 and move any hard-coded visible strings from Phases 2-3 into locale keys. Gujarati and Hindi strings stay flagged needs_review.
+- Add a test that fails when gu.json or hi.json lacks a key present in en.json.
+
+STEP 5 - VERIFY
+Run lint, typecheck, test and build. Fix everything. Report: files changed, exact command results, any records you could not migrate without guessing, and remaining limitations. Do not proceed to Phase 5.
+```
+
+## PHASE 4H — Human task: choose and verify the schemes
+
+This phase cannot be delegated to an agent. Do it in parallel with the build, and finish it before Phase 8.
+
+1. Pick 6–10 schemes that fit the three personas (student, farmer, senior/widow). Aim for at least **3 human-verified**.
+2. For each, open the official page. Copy the eligibility criteria, documents, steps, URLs and the date you checked.
+3. Paste the official text into the agent with this prompt:
+
+```text
+SCHEME INTAKE. Convert ONLY the official text below into one SchemeRecord following AGENT.md section 7.
+
+Rules:
+- Use only facts stated in the text. For anything not stated use null or omit the field and list it under "Open questions".
+- Never fill gaps from memory. Never invent thresholds, amounts, documents, dates or URLs.
+- Express criteria using only the fields and operators in the registry. If a criterion cannot be expressed, do not force it: list it under "Not expressible".
+- Set verification.status to "needs_review" and reviewer to null. A human will upgrade it to "verified" after re-reading the record against the source.
+- Provide Gujarati and Hindi names only if they appear in the source; otherwise copy the English text and flag it needs_review.
+
+Official source URL: <paste>
+Date I opened it: <YYYY-MM-DD>
+Official text:
+<paste>
+```
+4. Re-read each generated record against the source. Only then set `status: "verified"`, your name as `reviewer` and the real `lastVerifiedAt`.
+5. Update `docs/DATA_VERIFICATION.md`.
 
 # PHASE 5 — Deterministic eligibility engine
 
@@ -240,22 +307,23 @@ Prefer 6–10 accurate records over 25 fabricated ones. The PPT's 15–25 is a t
 ```text
 PHASE 5 — DETERMINISTIC ELIGIBILITY ENGINE. CORE FEATURE.
 
-Implement a pure TypeScript evaluator independent of React and network calls. Support eq, lte, gte, in and exists.
+Implement AGENT.md section 8 exactly, as pure TypeScript independent of React and network calls:
+- evaluateScheme(scheme, subject, now), evaluateAll(schemes, subject, now), and a pure sortEvaluations (likely, possible, needs_verification, not_matching; then more passed rules first; then name).
+- Operators eq, lte, gte, in, exists.
+- Income band semantics from AGENT.md 7.2 / 8: a numeric limit inside a band yields unknown with reasonCode "straddles_band".
+- null, undefined, empty and explicit "unknown" => unknown, never fail. Invalid numeric input => unknown; do not coerce arbitrary strings.
+- Mandatory fail => not_matching; mandatory unknown => possible; all mandatory pass => likely.
+- needs_verification only when verification.status is needs_review, or status is verified and lastVerifiedAt is missing, in the future or older than STALE_AFTER_DAYS (one config constant, 180). demo_placeholder records evaluate normally and carry dataStatus "demo_placeholder".
+- Optional failures stay visible but never disqualify. Rule checks are always returned.
+- `now` is injected. No Date.now() or new Date() inside the evaluator.
+- No eligibility probability, no LLM call.
 
-Rules:
-- null, undefined, empty and explicit unknown => unknown, never fail;
-- invalid numeric input => unknown; do not coerce arbitrary strings;
-- mandatory fail => not_matching;
-- no mandatory fail but mandatory unknown => possible;
-- unverified/stale/ambiguous scheme => needs_verification, while still showing rule checks;
-- all mandatory pass on verified data => likely;
-- optional failures remain visible but do not disqualify;
-- no eligibility probability and no LLM call.
+Add a pure explainEvaluation(evaluation, scheme, language) helper that returns plain-language text built from locale keys, including the "confirm with your income certificate" message for straddling bands.
 
-Add a pure explanation helper. Write Vitest cases for every operator, all pass, mandatory fail, mandatory unknown, optional fail, null/undefined, wrong types, mixed outcomes and unverified schemes. Do not build UI yet. Run tests and show actual output.
+Write Vitest tests for: every operator; income band boundaries (limit equal to a band edge, inside a band, above all bands, unknown band); all pass; mandatory fail; mandatory unknown; optional fail; null/undefined; wrong types; mixed outcomes; needs_review; stale and future lastVerifiedAt; demo_placeholder; buildSubject for primary and for a family member; determinism (same input, same output). Do not build UI. Run tests and show actual output.
 ```
 
-**Acceptance:** change a mandatory answer and the evaluator result changes. If not, core is not done.
+**Acceptance:** change one mandatory answer and the evaluator result changes. If not, the core is not done.
 
 # PHASE 6 — Welcome and consent
 
@@ -265,81 +333,106 @@ Add a pure explanation helper. Write Vitest cases for every operator, all pass, 
 ```text
 PHASE 6 — WELCOME AND CONSENT.
 
-Build only Welcome and Consent following DESIGN.md.
+Build only Welcome and Consent following DESIGN.md and AGENT.md section 9.
 
 Welcome:
-- task-first, not marketing hero;
+- task-first, not a marketing hero;
 - SchemeSahayak wordmark, language and text-size controls;
 - persistent prototype banner;
-- primary “Find benefits for me” and secondary “Help someone else”;
-- privacy reassurance;
-- sample student/farmer/senior shortcuts below fold under “For judges and testers”;
+- primary "Find benefits for me" and secondary "Help someone else";
+- a visible ghost button "Try a sample" directly under the actions that opens the three sample personas (student, farmer, senior/widow) without scrolling; the same list may repeat below the fold under "For judges and testers";
+- privacy reassurance line;
 - no people illustration, stock photo, emoji or government emblem.
 
 Consent:
 - what we ask, what we do, what we never do, how to clear demo data;
-- one acknowledgement checkbox;
-- continue disabled until checked;
+- one acknowledgement checkbox; continue disabled until checked;
 - read-aloud only if actual support exists.
 
-Actions must update app state and navigate. Use locale keys, not scattered inline translations. Add tests for navigation and consent gating. Do not implement other screens.
+Choosing a sample persona loads it into journey state and goes to consent, then straight to results (the profile review is still reachable).
+Actions must update state and navigate. All strings via locale keys. Add tests for navigation, persona loading and consent gating. Do not implement other screens.
 ```
 
 # PHASE 7 — Guided profile
 
-**Goal:** one-question-at-a-time profile.
-
-Questions: district, Gujarat residence, age, occupation, student course/institution if relevant, category where relevant, annual income band including “I don't know”, disability where relevant.
+**Goal:** one-question-at-a-time profile, generated from the field registry.
 
 **Prompt:**
 ```text
 PHASE 7 — GUIDED PROFILE FLOW.
 
-Build one-question-at-a-time profile screens using the typed journey state and DESIGN.md QuestionStep.
+Build one-question-at-a-time screens using the typed journey state and DESIGN.md QuestionStep.
 
-- Questions map directly to fields referenced by scheme rules.
-- Ask district, residence, age, occupation, income and relevant conditional course/institution/category/disability questions.
-- Do not ask irrelevant questions.
-- Include I don't know wherever honest.
-- Large answer rows, progress and question count, back/next.
-- Back preserves answers; next validates current question.
-- Add profile review/edit before matching.
-- Sample persona shortcut must work.
-- Voice must not pretend to listen; omit/disable it until implemented, with explanation.
-- On completion save profile locally and navigate to Results, which will use the actual evaluator.
+- Questions come from PROFILE_FIELDS plus a QUESTION_DEFS table (field, answer options with locale keys, optional askWhen(profile) condition). Do not hand-code each screen.
+- Ask a question ONLY if at least one loaded scheme rule references that field (derive the relevant field set from the scheme data) and its askWhen condition holds (for example education level only for students; agricultural land only for farmers; marital status only if a loaded scheme rule uses it).
+- Include "I don't know" wherever honest; it stores the registry's unknown value.
+- Large answer rows, progress bar and "Question n of N" (N recomputed when conditional questions appear), back/next. Back preserves answers; next validates the current question.
+- Profile review/edit screen before matching, with an edit link per row.
+- Sample persona shortcut works and uses the same evaluator path as manual entry.
+- Optional "Add a family member" at the review step that reuses the person-facts questions (only if Phase 8C is planned; otherwise omit).
+- Voice must not pretend to listen; disable it with a one-line explanation until implemented.
+- On completion save the profile locally and navigate to Results. No hard-coded result cards.
 
-Add tests for conditional questions, answer persistence and navigation. No hard-coded result cards.
+Add tests for conditional questions, N recomputation, answer persistence and navigation.
 ```
 
-# PHASE 8 — Results and scheme detail
+# PHASE 8A — Results list, Dot-row and master-detail
 
-**Goal:** explainable results, not static scheme cards.
+**Goal:** explainable results from the real engine.
 
 **Prompt:**
 ```text
-PHASE 8 — RESULTS AND SCHEME DETAIL. CONNECT THE REAL ENGINE.
+PHASE 8A — RESULTS. CONNECT THE REAL ENGINE.
 
-Results:
-- evaluate every scheme against the active profile using Phase 5 evaluator;
-- derive counts, never hard-code;
-- All / Likely / Possibly filters; All also includes not_matching and needs_verification;
-- SchemeRow shows name, department, status icon + text + colour, Dot-row, textual count, one-line reason and source/freshness or Demo data;
-- selecting a row opens its detail;
-- 1024px+ master-detail; mobile list then detail route.
+- Evaluate every scheme for the active subject with evaluateAll and sortEvaluations. Derive counts; never hard-code.
+- Build DotRow (src/components/domain) exactly as DESIGN.md 7.1: filled circle (met), half-filled ring (unknown), dashed ring (does not match); shapes plus colour; text count beside it; aria-label summarising counts; dots aria-hidden. Unit-test the label and counts.
+- Build final StatusBadge (icon + text + colour for the four states) and SchemeRow (ledger row, one tap target).
+- Each row shows: name, department, status badge, DotRow with count, one-line reason from explainEvaluation, and either "Checked on <date>" or the Demo data tag (or Needs checking).
+- Filters All / Likely / Possibly (All includes not_matching and needs_verification). Counts computed from results; aria-live for the result count.
+- The one orchestrated motion: dots fill in sequence the first time results appear (DESIGN.md section 9), once per load, disabled under reduced motion.
+- 1024px+ master-detail (list left, detail pane right); on mobile a row opens the detail route.
+- Empty and error states per DESIGN.md.
 
-Detail:
-- matched, unknown and failed criteria grouped separately;
-- actual profile value or Not provided;
-- documents and where-to-get guidance;
-- application steps, official source, last checked;
-- local-only Report outdated info sheet must say it is not sent;
-- exact department-final-decision disclaimer;
-- profile edit returns to the same profile and recalculates.
-
-Do not claim official eligibility. Do not present unverified facts as verified. Add tests proving a changed mandatory answer changes the visible result and criteria. Test mobile and desktop.
+Add tests proving that changing a mandatory profile answer changes the visible status, counts and Dot-row label. Check 360, 390, 768, 1024, 1280px and Gujarati long strings.
 ```
 
-**Manual check:** load student persona, change income, see actual status/criteria update.
+**Manual check:** load the student persona, change income, watch status and counts change.
+
+# PHASE 8B — Scheme detail
+
+**Prompt:**
+```text
+PHASE 8B — SCHEME DETAIL.
+
+- Header: name, department, StatusBadge, DotRow and count.
+- Criteria in three groups: "What matches", "We need to confirm", "What does not match". Each row shows the criterion label, the actual profile value (formatted) or "Not provided", and the explanation (including the straddling-income message).
+- Documents from the document catalog with have/missing state from journey readiness (DocumentRow), expandable "Where to get it" using whereToGet only; if absent show "Ask the issuing office".
+- Application steps, official source link, "Checked on <date>" or Demo data with the note "These rules are for demonstration and are not official."
+- Local-only "Report outdated information" sheet that states clearly it is not sent anywhere.
+- Exact disclaimer: "This is guidance. The department makes the final decision."
+- "Edit my answers" returns to the profile review and recalculates on return.
+- Sticky primary action "See my checklist".
+- Never present unverified facts as verified. External links open safely (target="_blank", rel="noreferrer").
+
+Add tests for grouping, "Not provided", demo/needs-check labelling and recalculation after editing.
+```
+
+# PHASE 8C — Family lens (should have)
+
+**Prompt:**
+```text
+PHASE 8C — FAMILY LENS.
+
+If the active profile has family members, add a SubjectSwitcher above Results ("For: <names>").
+- individual schemes are evaluated per member using buildSubject; household schemes are evaluated once for the primary applicant.
+- Each row states who it may fit. Switching subject recomputes everything from source state; no duplicated result state.
+- Document readiness stays keyed by canonical documentTypeId for the household.
+- If there are no family members, hide the switcher.
+- Reuse the same engine, rows and detail screens. Helper-family records plug into the same path in Phase 11.
+
+Add tests: member-specific results differ from the primary's; household schemes appear once; switching subject updates counts.
+```
+If you skip 8C, change the pitch wording from "family context" to "household context".
 
 # PHASE 9 — Synthetic document demo
 
@@ -358,7 +451,7 @@ Do not implement real uploads, OCR APIs, storage or document services.
 - Reveal predefined local sample fields (not OCR output).
 - Ask “Is this correct?” with Yes, use these and Fix a value.
 - Fix opens editable local fields.
-- Confirmation updates document readiness.
+- Confirmation updates readiness for the canonical documentTypeId, so every scheme that requires that document reflects it.
 - Show “File deleted from this session” only as sample-session messaging; no real file was uploaded.
 - Never claim authenticity verification.
 
@@ -373,7 +466,7 @@ Respect reduced motion. Test confirmation, correction and readiness update.
 ```text
 PHASE 10 — READINESS CHECKLIST AND OFFICIAL HAND-OFF.
 
-Build checklist from a pure buildChecklist function, selected scheme, profile and confirmed sample readiness.
+Build checklist from a pure buildChecklist function, selected scheme, active subject and readiness keyed by canonical documentTypeId. Where-to-get steps come only from the scheme record; otherwise show "Ask the issuing office".
 
 - One dark readiness summary panel only.
 - Ready and missing groups; status icon + text + colour; Dot-row and count.
@@ -542,6 +635,10 @@ Record a 60–90 second backup video. Do not depend on microphone or external po
 - [ ] Deep links refresh.
 - [ ] No console errors or secrets.
 - [ ] README, public repo and deployed URL work.
+- [ ] At least 3 schemes are human-verified with real dates; every other record shows Demo data or Needs checking.
+- [ ] docs/DATA_VERIFICATION.md is complete and honest.
+- [ ] Missing-locale-key test passes; no hard-coded visible strings.
+- [ ] Old or corrupt persisted state does not crash the app.
 
 ## Correction prompt if the agent drifts
 
@@ -561,4 +658,12 @@ This is a visual mock, not a working prototype. Audit every visible button, inpu
 For each control, identify the state it reads/updates and implement the actual transition. Add tests for critical behaviour.
 
 Changing a mandatory profile answer must change the deterministic evaluation. Confirming the sample document must update readiness. The official link must open the exact URL in scheme data. Do not fake success with a toast when state did not change. Do not add backend services.
+```
+
+## Correction prompt if the agent invents scheme data
+
+```text
+STOP. Some scheme facts may have been invented.
+
+List every scheme record field you populated (thresholds, benefits, documents, steps, URLs, dates, Gujarati and Hindi names) and, for each, the exact official source text it came from. For anything without a source: set it to null or remove it, change the record to demo_placeholder or needs_review, and add it to docs/DATA_VERIFICATION.md. Do not add new schemes. Do not fill gaps from memory. Run validation and tests and report actual results.
 ```

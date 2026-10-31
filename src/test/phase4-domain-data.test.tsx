@@ -6,6 +6,7 @@ import { WelcomePage } from '../features/welcome/WelcomePage'
 import { SCHEMES_DATASET } from '../data/schemes'
 import { SAMPLE_PERSONAS } from '../data/personas'
 import { SAMPLE_FAMILIES } from '../data/helperFamilies'
+import { DOCUMENT_CATALOG_MAP } from '../data/documentCatalog'
 import type { RuleOperator } from '../domain/scheme.types'
 
 describe('Phase 4 — Language Switching Integration Test', () => {
@@ -61,10 +62,14 @@ describe('Phase 4 — Domain Data Validation', () => {
       expect(scheme.summary.en).toBeTruthy()
       expect(scheme.benefitDescription.en).toBeTruthy()
       expect(scheme.sourceUrl).toMatch(/^https:\/\//)
-      expect(scheme.applicationUrl).toMatch(/^https:\/\//)
+      if (scheme.applicationUrl !== null) {
+        expect(scheme.applicationUrl).toMatch(/^https:\/\//)
+      }
+      expect(['individual', 'household']).toContain(scheme.beneficiaryScope)
 
       // Rules validation
       expect(scheme.rules.length).toBeGreaterThanOrEqual(1)
+      expect(scheme.rules.some((r) => r.mandatory)).toBe(true)
       scheme.rules.forEach((rule) => {
         expect(rule.id).toBeTruthy()
         expect(rule.field).toBeTruthy()
@@ -74,13 +79,11 @@ describe('Phase 4 — Domain Data Validation', () => {
         expect(rule.label.hi).toBeTruthy()
       })
 
-      // Required documents validation
+      // Required documents validation (AGENT.md section 7: documentTypeId)
       expect(scheme.requiredDocuments.length).toBeGreaterThanOrEqual(1)
       scheme.requiredDocuments.forEach((doc) => {
-        expect(doc.id).toBeTruthy()
-        expect(doc.name.en).toBeTruthy()
-        expect(doc.name.gu).toBeTruthy()
-        expect(doc.name.hi).toBeTruthy()
+        expect(doc.documentTypeId).toBeTruthy()
+        expect(DOCUMENT_CATALOG_MAP[doc.documentTypeId]).toBeDefined()
         expect(doc.helpText.en).toBeTruthy()
       })
 
@@ -88,6 +91,9 @@ describe('Phase 4 — Domain Data Validation', () => {
       expect(['verified', 'needs_review', 'demo_placeholder']).toContain(scheme.verification.status)
       if (scheme.verification.status === 'demo_placeholder') {
         expect(scheme.verification.note).toBeTruthy()
+      }
+      if (scheme.verification.status !== 'verified') {
+        expect(scheme.lastVerifiedAt).toBeNull()
       }
     })
   })
@@ -99,13 +105,20 @@ describe('Phase 4 — Domain Data Validation', () => {
     personas.forEach((persona) => {
       expect(persona.id).toBeTruthy()
       expect(persona.displayName).toBeTruthy()
+      expect(persona.isSynthetic).toBe(true)
       expect(persona.district).toBeTruthy()
       expect(persona.residenceState).toBe('Gujarat')
       expect(typeof persona.age === 'number' || persona.age === null).toBe(true)
-      expect(['student', 'farmer', 'senior']).toContain(persona.occupation)
+      expect(['female', 'male', 'other', 'unknown']).toContain(persona.gender)
+      expect(['single', 'married', 'widowed', 'divorced_or_separated', 'unknown']).toContain(
+        persona.maritalStatus
+      )
+      expect(['student', 'farmer', 'retired_or_senior']).toContain(persona.occupation)
       expect(['under_1l', '1l_2_5l', '2_5l_5l', 'above_5l', 'unknown']).toContain(
         persona.annualHouseholdIncome
       )
+      expect(['yes', 'no', 'unknown']).toContain(persona.ownsAgriculturalLand)
+      expect(['aay', 'bpl', 'apl', 'none', 'unknown']).toContain(persona.rationCardType)
       expect(persona.familyMembers?.length).toBeGreaterThanOrEqual(1)
     })
   })

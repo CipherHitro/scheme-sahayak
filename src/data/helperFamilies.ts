@@ -1,4 +1,5 @@
 import type { Language } from '../domain/journey.types'
+import { validateHelperFamilies } from './validation'
 
 export interface SampleHelperFamily {
   id: string
@@ -12,7 +13,7 @@ export interface SampleHelperFamily {
   lastAssistedAt: string
 }
 
-export const SAMPLE_FAMILIES: SampleHelperFamily[] = [
+const RAW_SAMPLE_FAMILIES: SampleHelperFamily[] = [
   {
     id: 'fam-patel',
     familyName: {
@@ -71,3 +72,5 @@ export const SAMPLE_FAMILIES: SampleHelperFamily[] = [
     lastAssistedAt: '2026-10-30',
   },
 ]
+
+export const SAMPLE_FAMILIES: SampleHelperFamily[] = validateHelperFamilies(RAW_SAMPLE_FAMILIES)
