@@ -25,12 +25,28 @@ export interface JourneyContextValue {
   loadSamplePersona: (persona: 'student' | 'farmer' | 'senior') => void
 }
 
+export const defaultJourneyContext: JourneyContextValue = {
+  language: 'gu',
+  setLanguage: () => {},
+  textScale: 1,
+  setTextScale: () => {},
+  consentGiven: false,
+  setConsentGiven: () => {},
+  mode: 'citizen',
+  setMode: () => {},
+  currentProfile: null,
+  setCurrentProfile: () => {},
+  selectedSchemeId: null,
+  setSelectedSchemeId: () => {},
+  documentConfirmations: {},
+  confirmDocument: () => {},
+  resetJourney: () => {},
+  loadSamplePersona: () => {},
+}
+
 export const JourneyContext = React.createContext<JourneyContextValue | null>(null)
 
 export function useJourney(): JourneyContextValue {
   const context = React.useContext(JourneyContext)
-  if (!context) {
-    throw new Error('useJourney must be used within a JourneyProvider')
-  }
-  return context
+  return context ?? defaultJourneyContext
 }

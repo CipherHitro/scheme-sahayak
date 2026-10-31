@@ -3,10 +3,12 @@ import { MagnifyingGlass, UsersThree, ArrowRight } from '@phosphor-icons/react'
 import { AppShell } from '../../components/layout/AppShell'
 import { Button } from '../../components/ui/Button'
 import { useJourney } from '../../app/journey-context'
+import { useTranslation } from '../../i18n'
 
 export function WelcomePage() {
   const navigate = useNavigate()
   const { setMode, loadSamplePersona, resetJourney } = useJourney()
+  const { t, language } = useTranslation()
 
   const handleStartCitizen = () => {
     setMode('citizen')
@@ -33,20 +35,20 @@ export function WelcomePage() {
           icon={<ArrowRight />}
           onClick={handleStartCitizen}
         >
-          Find benefits for me
+          {t.welcome.findBenefitsBtn}
         </Button>
       }
     >
       <div className="space-y-6">
         <header className="space-y-2">
           <div className="inline-block px-2.5 py-1 rounded-[10px] bg-neel-soft text-neel text-xs font-semibold">
-            Route: / (Welcome Screen Placeholder)
+            Route: / (Welcome) • Lang: {language.toUpperCase()}
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-neel tracking-tight">
-            તમારા પરિવાર માટે કઈ સરકારી યોજનાઓ છે, જાણો.
+            {t.welcome.headline}
           </h1>
           <p className="text-sm text-ink-2 leading-relaxed">
-            Answer a few simple questions. SchemeSahayak evaluates eligibility using local deterministic rules, explains why, and prepares your required documents.
+            {t.welcome.description}
           </p>
         </header>
 
@@ -58,7 +60,7 @@ export function WelcomePage() {
             icon={<MagnifyingGlass />}
             onClick={handleStartCitizen}
           >
-            Find benefits for me
+            {t.welcome.findBenefitsBtn}
           </Button>
 
           <Button
@@ -68,14 +70,14 @@ export function WelcomePage() {
             icon={<UsersThree />}
             onClick={handleStartHelper}
           >
-            Help someone else (Helper mode)
+            {t.welcome.helpSomeoneBtn}
           </Button>
         </div>
 
         {/* Shortcuts for judges/testers */}
         <section className="pt-4 border-t border-line space-y-3">
           <h2 className="text-xs font-semibold text-ink-2 uppercase tracking-wide">
-            For judges and testers (Synthetic shortcuts)
+            {t.common.forJudges}
           </h2>
           <div className="flex flex-wrap gap-2">
             <Button
@@ -83,20 +85,20 @@ export function WelcomePage() {
               variant="secondary"
               onClick={handleQuickSampleStudent}
             >
-              Direct test: Sample Student
+              {t.common.sampleStudent}
             </Button>
             <Button
               size="compact"
               variant="ghost"
               onClick={resetJourney}
             >
-              Start over / Clear demo data
+              {t.common.startOver}
             </Button>
           </div>
         </section>
 
         <footer className="text-xs text-ink-2 pt-2 border-t border-line text-center">
-          This is guidance. The department makes the final decision.
+          {t.common.guidanceDisclaimer}
         </footer>
       </div>
     </AppShell>

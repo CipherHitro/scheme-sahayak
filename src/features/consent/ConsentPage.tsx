@@ -3,10 +3,12 @@ import { ArrowLeft, ArrowRight, ShieldCheck, LockKey } from '@phosphor-icons/rea
 import { AppShell } from '../../components/layout/AppShell'
 import { Button } from '../../components/ui/Button'
 import { useJourney } from '../../app/journey-context'
+import { useTranslation } from '../../i18n'
 
 export function ConsentPage() {
   const navigate = useNavigate()
   const { consentGiven, setConsentGiven } = useJourney()
+  const { t } = useTranslation()
 
   const handleContinue = () => {
     if (consentGiven) {
@@ -25,20 +27,20 @@ export function ConsentPage() {
           icon={<ArrowRight />}
           onClick={handleContinue}
         >
-          Continue to profile
+          {t.consent.continueBtn}
         </Button>
       }
     >
       <div className="space-y-6">
         <header className="space-y-2">
           <div className="inline-block px-2.5 py-1 rounded-[10px] bg-neel-soft text-neel text-xs font-semibold">
-            Route: /consent (Consent Placeholder)
+            Route: /consent
           </div>
           <h1 className="text-2xl font-bold text-neel tracking-tight">
-            Privacy and Demo Consent
+            {t.consent.title}
           </h1>
           <p className="text-sm text-ink-2">
-            Clear guidelines on what we ask, how data is processed, and what we never do.
+            {t.consent.description}
           </p>
         </header>
 
@@ -46,9 +48,11 @@ export function ConsentPage() {
           <div className="flex items-start gap-3">
             <LockKey className="size-6 text-neel shrink-0 mt-0.5" />
             <div className="space-y-1">
-              <h2 className="text-sm font-semibold text-neel">Local processing only</h2>
+              <h2 className="text-sm font-semibold text-neel">
+                {t.consent.localProcessingTitle}
+              </h2>
               <p className="text-xs text-ink-2 leading-relaxed">
-                All profile answers and scheme rules are evaluated directly in your browser. No personal data is sent to external cloud servers.
+                {t.consent.localProcessingDesc}
               </p>
             </div>
           </div>
@@ -56,9 +60,11 @@ export function ConsentPage() {
           <div className="flex items-start gap-3">
             <ShieldCheck className="size-6 text-mor shrink-0 mt-0.5" />
             <div className="space-y-1">
-              <h2 className="text-sm font-semibold text-neel">No credentials collected</h2>
+              <h2 className="text-sm font-semibold text-neel">
+                {t.consent.noCredentialsTitle}
+              </h2>
               <p className="text-xs text-ink-2 leading-relaxed">
-                We never ask for OTP, passwords, bank PINs, or real Aadhaar documents.
+                {t.consent.noCredentialsDesc}
               </p>
             </div>
           </div>
@@ -72,7 +78,7 @@ export function ConsentPage() {
                 className="size-5 rounded text-neel focus:ring-neel border-line cursor-pointer"
               />
               <span className="text-sm font-medium text-neel">
-                I understand this is a guidance prototype and consent to continue.
+                {t.consent.checkboxLabel}
               </span>
             </label>
           </div>
@@ -85,7 +91,7 @@ export function ConsentPage() {
             icon={<ArrowLeft />}
             onClick={() => navigate('/')}
           >
-            Back to Welcome
+            {t.common.back}
           </Button>
 
           <Button
@@ -94,7 +100,7 @@ export function ConsentPage() {
             disabled={!consentGiven}
             onClick={handleContinue}
           >
-            Next: Profile
+            {t.common.next}
           </Button>
         </div>
       </div>

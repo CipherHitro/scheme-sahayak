@@ -8,10 +8,10 @@ describe('App Root Router & Journey Integration', () => {
     expect(screen.getByText('Scheme')).toBeInTheDocument()
     expect(screen.getByText('Sahayak')).toBeInTheDocument()
     expect(
-      screen.getByText(/Prototype\. Sample data and simulated document reading\./i),
+      screen.getByText(/પ્રોટોટાઇપ|Prototype/i),
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/This is guidance\. The department makes the final decision\./i),
+      screen.getByText(/આ માર્ગદર્શન છે|This is guidance/i),
     ).toBeInTheDocument()
   })
 

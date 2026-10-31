@@ -1,20 +1,19 @@
 import * as React from 'react'
 import { cn } from '../../lib/utils'
-
-export type AppLanguage = 'gu' | 'hi' | 'en'
-export type TextScale = 1 | 1.125 | 1.25
+import { useJourney } from '../../app/journey-context'
+import type { Language, TextScale } from '../../domain/journey.types'
 
 export interface AppHeaderProps extends React.HTMLAttributes<HTMLElement> {
-  currentLanguage?: AppLanguage
-  onLanguageChange?: (lang: AppLanguage) => void
+  currentLanguage?: Language
+  onLanguageChange?: (lang: Language) => void
   currentTextScale?: TextScale
   onTextScaleChange?: (scale: TextScale) => void
   onWordmarkClick?: () => void
 }
 
-const languageOptions: { id: AppLanguage; label: string; langAttr: string }[] = [
+const languageOptions: { id: Language; label: string; langAttr: string }[] = [
   { id: 'gu', label: 'ગુજ', langAttr: 'gu' },
-  { id: 'hi', label: 'हिं', langAttr: 'hi' },
+  { id: 'hi', label: 'हि\u0902', langAttr: 'hi' },
   { id: 'en', label: 'EN', langAttr: 'en' },
 ]
 
@@ -25,55 +24,27 @@ const textScaleOptions: { scale: TextScale; label: string; sizeClass: string; ti
 ]
 
 export const AppHeader: React.FC<AppHeaderProps> = ({
-  currentLanguage = 'gu',
+  currentLanguage,
   onLanguageChange,
-  currentTextScale = 1,
+  currentTextScale,
   onTextScaleChange,
   onWordmarkClick,
   className,
   ...props
 }) => {
-  const [lang, setLang] = React.useState<AppLanguage>(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('scheme_sahayak_lang') as AppLanguage | null
-      if (stored && (stored === 'gu' || stored === 'hi' || stored === 'en')) {
-        return stored
-      }
-    }
-    return currentLanguage
-  })
+  const journey = useJourney()
+  const activeLang = currentLanguage ?? journey.language
+  const activeScale = currentTextScale ?? journey.textScale
 
-  const [textScale, setTextScale] = React.useState<TextScale>(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('scheme_sahayak_text_scale')
-      if (stored) {
-        const parsed = parseFloat(stored)
-        if (parsed === 1 || parsed === 1.125 || parsed === 1.25) {
-          return parsed as TextScale
-        }
-      }
-    }
-    return currentTextScale
-  })
-
-  const handleLanguageSelect = (selectedLang: AppLanguage) => {
-    setLang(selectedLang)
+  const handleLanguageSelect = (selectedLang: Language) => {
+    journey.setLanguage(selectedLang)
     onLanguageChange?.(selectedLang)
   }
 
   const handleTextScaleSelect = (selectedScale: TextScale) => {
-    setTextScale(selectedScale)
+    journey.setTextScale(selectedScale)
     onTextScaleChange?.(selectedScale)
   }
-
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('scheme_sahayak_lang', lang)
-      localStorage.setItem('scheme_sahayak_text_scale', String(textScale))
-      document.documentElement.lang = lang
-      document.documentElement.style.setProperty('--text-scale', String(textScale))
-    }
-  }, [lang, textScale])
 
   return (
     <header
@@ -89,7 +60,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         <button
           type="button"
           onClick={onWordmarkClick}
-          className="text-left font-bold text-xl sm:text-2xl text-neel tracking-tight hover:opacity-90 transition-opacity focus-visible:outline-3 focus-visible:outline-neel focus-visible:outline-offset-2 rounded"
+          className="text-left font-bold text-xl sm:text-2xl text-neel tracking-tight hover:opacity-90 transition-opacity focus-visible:outline-3 focus-visible:outline-neel focus-visible:outline-offset-2 rounded cursor-pointer"
           aria-label="SchemeSahayak Home"
         >
           <span>Scheme</span>
@@ -106,7 +77,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           className="inline-flex items-center p-0.5 rounded-[10px] border border-line bg-paper shadow-none"
         >
           {textScaleOptions.map((opt) => {
-            const isSelected = textScale === opt.scale
+            const isSelected = activeScale === opt.scale
             return (
               <button
                 key={opt.scale}
@@ -119,7 +90,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
                   'min-w-[34px] sm:min-w-[38px] h-9 px-2 flex items-center justify-center rounded-[8px] transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-neel',
                   opt.sizeClass,
                   isSelected
-                    ? 'bg-neel text-paper'
+                    ? 'bg-neel text-paper font-bold'
                     : 'bg-transparent text-neel hover:bg-salt-2',
                 )}
               >
@@ -136,7 +107,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           className="inline-flex items-center p-0.5 rounded-[10px] border border-line bg-paper shadow-none"
         >
           {languageOptions.map((opt) => {
-            const isSelected = lang === opt.id
+            const isSelected = activeLang === opt.id
             return (
               <button
                 key={opt.id}

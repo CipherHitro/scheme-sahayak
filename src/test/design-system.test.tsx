@@ -102,7 +102,7 @@ describe('Phase 2 — Design System Components', () => {
 
   describe('PrototypeBanner', () => {
     it('renders exact honesty copy', () => {
-      render(<PrototypeBanner />)
+      render(<PrototypeBanner message="Prototype. Sample data and simulated document reading." />)
       expect(
         screen.getByText('Prototype. Sample data and simulated document reading.')
       ).toBeInTheDocument()

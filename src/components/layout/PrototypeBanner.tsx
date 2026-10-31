@@ -1,16 +1,20 @@
 import * as React from 'react'
 import { Info } from '@phosphor-icons/react'
 import { cn } from '../../lib/utils'
+import { useTranslation } from '../../i18n'
 
 export interface PrototypeBannerProps extends React.HTMLAttributes<HTMLDivElement> {
   message?: string
 }
 
 export const PrototypeBanner: React.FC<PrototypeBannerProps> = ({
-  message = 'Prototype. Sample data and simulated document reading.',
+  message,
   className,
   ...props
 }) => {
+  const { t } = useTranslation()
+  const displayMessage = message ?? t.banner.prototypeNotice
+
   return (
     <aside
       aria-label="Prototype notice"
@@ -21,7 +25,7 @@ export const PrototypeBanner: React.FC<PrototypeBannerProps> = ({
       {...props}
     >
       <Info weight="fill" className="size-4 shrink-0" aria-hidden="true" />
-      <span>{message}</span>
+      <span>{displayMessage}</span>
     </aside>
   )
 }

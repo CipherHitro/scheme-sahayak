@@ -126,8 +126,8 @@ describe('Phase 3 — Route Placeholders & Deep-Link Recovery', () => {
       </MemoryRouter>
     )
 
-    expect(screen.getByText(/Route: \/ \(Welcome Screen Placeholder\)/i)).toBeInTheDocument()
-    expect(screen.getAllByRole('button', { name: /Find benefits for me/i })[0]).toBeInTheDocument()
+    expect(screen.getByText(/Route: \/ /i)).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /મારા માટે યોજનાઓ શોધો|Find benefits for me/i })[0]).toBeInTheDocument()
   })
 
   it('renders ConsentPage on /consent', () => {
@@ -230,7 +230,7 @@ describe('Phase 3 — Route Placeholders & Deep-Link Recovery', () => {
     )
 
     expect(screen.getByText(/Route: \/helper/i)).toBeInTheDocument()
-    expect(screen.getByText(/Rameshbhai Patel Household/i)).toBeInTheDocument()
+    expect(screen.getByText(/રમેશભાઈ પટેલ|Rameshbhai Patel/i)).toBeInTheDocument()
   })
 
   it('renders FamilyDetailPage on /helper/families/:id', () => {
@@ -245,6 +245,6 @@ describe('Phase 3 — Route Placeholders & Deep-Link Recovery', () => {
     )
 
     expect(screen.getByText(/Route: \/helper\/families\/fam-patel/i)).toBeInTheDocument()
-    expect(screen.getByText(/Rameshbhai Patel Household/i)).toBeInTheDocument()
+    expect(screen.getByText(/રમેશભાઈ પટેલ|Rameshbhai Patel/i)).toBeInTheDocument()
   })
 })

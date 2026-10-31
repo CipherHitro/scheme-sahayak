@@ -3,19 +3,23 @@ import { ArrowLeft, UsersThree, FileText } from '@phosphor-icons/react'
 import { AppShell } from '../../components/layout/AppShell'
 import { Button } from '../../components/ui/Button'
 import { SAMPLE_FAMILIES } from '../../data/helperFamilies'
+import { useJourney } from '../../app/journey-context'
 
 export function FamilyDetailPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { language } = useJourney()
 
-  const family = SAMPLE_FAMILIES.find((f) => f.id === id) ?? {
-    id: id ?? 'unknown',
-    familyName: `Household (${id})`,
-    district: 'Gujarat',
-    membersCount: 3,
-    missingDocsCount: 2,
-    primaryScheme: 'Sample Scheme',
-  }
+  const familyRecord = SAMPLE_FAMILIES.find((f) => f.id === id)
+  const familyName = familyRecord
+    ? (familyRecord.familyName[language] ?? familyRecord.familyName.en)
+    : `Household (${id})`
+  const schemeName = familyRecord
+    ? (familyRecord.primarySchemeName[language] ?? familyRecord.primarySchemeName.en)
+    : 'Primary Scheme'
+  const district = familyRecord?.district ?? 'Gujarat'
+  const membersCount = familyRecord?.membersCount ?? 3
+  const missingDocsCount = familyRecord?.missingDocsCount ?? 2
 
   return (
     <AppShell>
@@ -27,11 +31,11 @@ export function FamilyDetailPage() {
           <div className="flex items-center gap-2">
             <UsersThree className="size-6 text-neel" />
             <h1 className="text-xl sm:text-2xl font-bold text-neel tracking-tight">
-              {family.familyName}
+              {familyName}
             </h1>
           </div>
           <p className="text-xs text-ink-2">
-            District: {family.district} • Family Members: {family.membersCount}
+            District: {district} • Family Members: {membersCount}
           </p>
         </header>
 
@@ -40,10 +44,10 @@ export function FamilyDetailPage() {
           <div className="p-3.5 rounded-[10px] bg-salt border border-line flex items-center justify-between">
             <div>
               <span className="font-semibold text-sm text-neel block">
-                {family.primaryScheme}
+                {schemeName}
               </span>
               <span className="text-xs text-madder font-medium">
-                {family.missingDocsCount} documents missing for full readiness
+                {missingDocsCount} documents missing for full readiness
               </span>
             </div>
             <Button

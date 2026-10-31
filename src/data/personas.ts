@@ -1,4 +1,4 @@
-import type { BeneficiaryProfile } from '../domain/journey.types'
+import type { BeneficiaryProfile } from '../domain/profile.types'
 
 export const SAMPLE_PERSONAS: Record<'student' | 'farmer' | 'senior', BeneficiaryProfile> = {
   student: {
@@ -13,6 +13,22 @@ export const SAMPLE_PERSONAS: Record<'student' | 'farmer' | 'senior', Beneficiar
     category: 'ews',
     annualHouseholdIncome: '1l_2_5l',
     disability: 'no',
+    familyMembers: [
+      {
+        id: 'member-father',
+        displayName: { en: 'Sureshbhai Patel', gu: 'સુરેશભાઈ પટેલ', hi: 'सुरेशभाई पटेल' },
+        relationship: { en: 'Father', gu: 'પિતા', hi: 'पिता' },
+        age: 51,
+        occupation: 'salaried',
+      },
+      {
+        id: 'member-mother',
+        displayName: { en: 'Hansaben Patel', gu: 'હંસાબેન પટેલ', hi: 'हंसाबेन पटेल' },
+        relationship: { en: 'Mother', gu: 'માતા', hi: 'माता' },
+        age: 47,
+        occupation: 'homemaker',
+      },
+    ],
   },
   farmer: {
     id: 'sample-farmer',
@@ -24,6 +40,22 @@ export const SAMPLE_PERSONAS: Record<'student' | 'farmer' | 'senior', Beneficiar
     category: 'general',
     annualHouseholdIncome: 'under_1l',
     disability: 'no',
+    familyMembers: [
+      {
+        id: 'member-wife',
+        displayName: { en: 'Shilpaben Patel', gu: 'શિલ્પાબેન પટેલ', hi: 'शिल्पाबेन पटेल' },
+        relationship: { en: 'Wife', gu: 'પત્ની', hi: 'पत्नी' },
+        age: 44,
+        occupation: 'homemaker',
+      },
+      {
+        id: 'member-son',
+        displayName: { en: 'Jay Patel', gu: 'જય પટેલ', hi: 'जय पटेल' },
+        relationship: { en: 'Son', gu: 'પુત્ર', hi: 'पुत्र' },
+        age: 17,
+        occupation: 'student',
+      },
+    ],
   },
   senior: {
     id: 'sample-senior',
@@ -35,5 +67,14 @@ export const SAMPLE_PERSONAS: Record<'student' | 'farmer' | 'senior', Beneficiar
     category: 'general',
     annualHouseholdIncome: 'under_1l',
     disability: 'no',
+    familyMembers: [
+      {
+        id: 'member-spouse',
+        displayName: { en: 'Gitaben Shah', gu: 'ગીતાબેન શાહ', hi: 'गीताबेन शाह' },
+        relationship: { en: 'Wife', gu: 'પત્ની', hi: 'पत्नी' },
+        age: 65,
+        occupation: 'senior',
+      },
+    ],
   },
 }
