@@ -71,3 +71,54 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Scan sweep animation per DESIGN.md: 1.2s top-to-bottom sweep */
+@keyframes scanSweep {
+  0% {
+    top: 0%;
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0.8;
+  }
+}
+
+.animate-scan-sweep {
+  animation: scanSweep 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Print stylesheet for Checklist per Phase 10 / AGENT.md */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  header[role="banner"],
+  nav,
+  .no-print,
+  button,
+  [role="toolbar"] {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .bg-neel {
+    background-color: #12263F !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .border-line {
+    border-color: #cccccc !important;
+  }
+}
+
