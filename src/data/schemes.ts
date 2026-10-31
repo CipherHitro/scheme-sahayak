@@ -1082,3 +1082,4 @@ const RAW_SCHEMES_DATASET: SchemeRecord[] = [
 
 // Validate dataset at module boundary — fails loudly in dev/test if invalid
 export const SCHEMES_DATASET: SchemeRecord[] = validateSchemes(RAW_SCHEMES_DATASET)
+export const SAMPLE_SCHEMES = SCHEMES_DATASET

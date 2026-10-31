@@ -230,7 +230,7 @@ describe('Phase 3 — Route Placeholders & Deep-Link Recovery', () => {
     )
 
     expect(screen.getByText(/Route: \/helper/i)).toBeInTheDocument()
-    expect(screen.getByText(/રમેશભાઈ પટેલ|Rameshbhai Patel/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/રમેશભાઈ પટેલ|Rameshbhai Patel/i).length).toBeGreaterThanOrEqual(1)
   })
 
   it('renders FamilyDetailPage on /helper/families/:id', () => {
@@ -245,6 +245,6 @@ describe('Phase 3 — Route Placeholders & Deep-Link Recovery', () => {
     )
 
     expect(screen.getByText(/Route: \/helper\/families\/fam-patel/i)).toBeInTheDocument()
-    expect(screen.getByText(/રમેશભાઈ પટેલ|Rameshbhai Patel/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/રમેશભાઈ પટેલ|Rameshbhai Patel/i).length).toBeGreaterThanOrEqual(1)
   })
 })

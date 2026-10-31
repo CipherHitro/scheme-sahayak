@@ -1,6 +1,7 @@
 {
   "banner": {
-    "prototypeNotice": "Prototype: sample data and simulated document reading."
+    "prototypeNotice": "Prototype: sample data and simulated document reading.",
+    "nativeReviewNotice": "Gujarati & Hindi copy pending official native-speaker review."
   },
   "common": {
     "appName": "Gujarat SchemeSahayak",
@@ -173,10 +174,49 @@
   },
   "helper": {
     "title": "Helper Mode: Beneficiary Households",
-    "subtitle": "Assisted workflow for CSC operators, e-Gram staff, and NGO workers assisting families with consent.",
+    "subtitle": "Assisted workflow for CSC operators, e-Gram Mitra, and NGO volunteers assisting families with consent.",
     "screenedToday": "Households Screened Today (Sample Data)",
     "missingDocsNote": "documents missing across records",
-    "addFamilyBtn": "Add new family"
+    "addFamilyBtn": "Add new family",
+    "consentNoticeTitle": "Informed Beneficiary Consent Required",
+    "consentNoticeDesc": "Helpers must obtain informed consent from the head of household before entering family information. All records displayed here are fictional sample households for demonstration.",
+    "sampleDataBadge": "Sample data",
+    "metricsTitle": "Screened Overview (Sample data)",
+    "totalHouseholds": "Households screened",
+    "totalMissingDocs": "Missing documents across records",
+    "totalMembers": "Individuals assisted",
+    "ledgerTitle": "Demonstration Household Ledger",
+    "membersCount": "{count} family members",
+    "headLabel": "Head of household: {name}",
+    "districtLabel": "District: {district}",
+    "primaryScheme": "Primary scheme: {scheme}",
+    "missingDocsBadge": "{count} documents missing",
+    "allDocsReadyBadge": "All documents ready",
+    "viewFamilyBtn": "View family details",
+    "addFamilyModalTitle": "Add New Household (Local Session Only)",
+    "addFamilyModalDesc": "Save a demonstration household locally to this device. No cloud sync, staff permissions, or remote storage are used.",
+    "familyNameLabel": "Family or household name",
+    "familyNamePlaceholder": "e.g. Govindbhai Parmar Household",
+    "headNameLabel": "Head of household full name",
+    "headNamePlaceholder": "e.g. Govindbhai Parmar",
+    "selectDistrictLabel": "District in Gujarat",
+    "selectSchemeLabel": "Primary scheme of interest",
+    "membersCountLabel": "Number of household members",
+    "missingDocsCountLabel": "Estimated missing documents",
+    "helperConsentCheckbox": "I confirm informed verbal consent was received from the beneficiary household.",
+    "saveHouseholdBtn": "Save household locally",
+    "cancelBtn": "Cancel",
+    "localRecordBadge": "Local temporary record",
+    "householdAddedSuccess": "Household record added locally. Changes persist in this browser session only.",
+    "familyDetailTitle": "Household Assistance & Scheme Readiness",
+    "familyDetailSubtitle": "Review matched schemes, missing documents, and guidance for this household.",
+    "lastAssistedLabel": "Assisted on {date}",
+    "reviewFamilySchemesBtn": "Review family schemes & results",
+    "backToHelper": "Back to household ledger",
+    "backToWelcome": "Return to Citizen Welcome",
+    "whereToGetMissingDocs": "Where to get missing documents",
+    "noMissingDocs": "All required certificates for this scheme are ready.",
+    "resetSampleFamilies": "Reset to sample families"
   },
   "recovery": {
     "title": "Profile answers not found",
@@ -193,5 +233,9 @@
     "notMatchingCriteria": "Does not meet required criteria: {failedRules}.",
     "needsVerification": "This scheme requires official verification before final determination.",
     "demoDisclaimer": "These rules are for demonstration and are not official."
+  },
+  "localeMeta": {
+    "nativeReviewNotice": "Gujarati and Hindi strings are prototype translations pending native-speaker sign-off.",
+    "nativeReviewBadge": "Review pending"
   }
 }

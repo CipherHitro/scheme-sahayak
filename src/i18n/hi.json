@@ -1,6 +1,7 @@
 {
   "banner": {
-    "prototypeNotice": "प्रोटोटाइप: नमूना डेटा और सिमुलेटेड दस्तावेज़ पठन।"
+    "prototypeNotice": "प्रोटोटाइप: नमूना डेटा और सिमुलेटेड दस्तावेज़ पठन।",
+    "nativeReviewNotice": "हिन्दी पाठ आधिकारिक स्थानीय वक्ता समीक्षा के अधीन है।"
   },
   "common": {
     "appName": "गुजरात योजना सहायक",
@@ -173,10 +174,49 @@
   },
   "helper": {
     "title": "सहायक मोड: लाभार्थी परिवार",
-    "subtitle": "सीएससी, ई-ग्राम या सामाजिक कार्यकर्ताओं के लिए सहमति से परिवारों की सहायता का मोड।",
-    "screenedToday": "आज मूल्यांकित परिवार (नमूना डेटा)",
+    "subtitle": "सीएससी ऑपरेटरों, ई-ग्राम मित्रों और एनजीओ कार्यकर्ताओं के लिए सहमति-आधारित सहायता कार्यप्रवाह।",
+    "screenedToday": "जाँचे गए परिवार (नमूना डेटा)",
     "missingDocsNote": "दस्तावेज़ शेष हैं",
-    "addFamilyBtn": "नया परिवार जोड़ें"
+    "addFamilyBtn": "नया परिवार जोड़ें",
+    "consentNoticeTitle": "लाभार्थी की सूचित सहमति अनिवार्य है",
+    "consentNoticeDesc": "परिवार का विवरण दर्ज करने से पहले सहायक को परिवार के मुखिया से स्पष्ट सहमति लेनी चाहिए। यहाँ प्रदर्शित सभी रिकॉर्ड केवल प्रदर्शन हेतु काल्पनिक नमूना डेटा हैं।",
+    "sampleDataBadge": "नमूना डेटा",
+    "metricsTitle": "जाँच सारांश (नमूना डेटा)",
+    "totalHouseholds": "जाँचे गए परिवार",
+    "totalMissingDocs": "कुल लंबित दस्तावेज़",
+    "totalMembers": "सहायता प्राप्त सदस्य",
+    "ledgerTitle": "नमूना परिवारों का लेज़र",
+    "membersCount": "{count} परिवार के सदस्य",
+    "headLabel": "परिवार के मुखिया: {name}",
+    "districtLabel": "ज़िला: {district}",
+    "primaryScheme": "प्रमुख योजना: {scheme}",
+    "missingDocsBadge": "{count} दस्तावेज़ शेष हैं",
+    "allDocsReadyBadge": "सभी दस्तावेज़ तैयार हैं",
+    "viewFamilyBtn": "परिवार का विवरण देखें",
+    "addFamilyModalTitle": "नया परिवार जोड़ें (केवल स्थानीय सत्र)",
+    "addFamilyModalDesc": "इस डिवाइस पर स्थानीय रूप से परिवार सहेजें। कोई क्लाउड सिंक या सर्वर ट्रांसफ़र नहीं होता है।",
+    "familyNameLabel": "परिवार का नाम",
+    "familyNamePlaceholder": "उदा. गोविंदभाई परमार परिवार",
+    "headNameLabel": "परिवार के मुखिया का पूरा नाम",
+    "headNamePlaceholder": "उदा. गोविंदभाई परमार",
+    "selectDistrictLabel": "गुजरात का ज़िला",
+    "selectSchemeLabel": "प्रमुख लक्षित योजना",
+    "membersCountLabel": "परिवार के सदस्यों की संख्या",
+    "missingDocsCountLabel": "अनुमानित लंबित दस्तावेज़",
+    "helperConsentCheckbox": "मैं पुष्टि करता हूँ कि लाभार्थी परिवार से मौखिक सहमति प्राप्त हुई है।",
+    "saveHouseholdBtn": "स्थानीय रूप से सहेजें",
+    "cancelBtn": "रद्द करें",
+    "localRecordBadge": "स्थानीय अस्थायी रिकॉर्ड",
+    "householdAddedSuccess": "परिवार स्थानीय लेज़र में जोड़ दिया गया है। यह केवल इस ब्राउज़र में रहेगा।",
+    "familyDetailTitle": "परिवार सहायता एवं योजना तैयारी",
+    "familyDetailSubtitle": "इस परिवार के लिए लक्षित योजनाएँ, लंबित दस्तावेज़ एवं मार्गदर्शन देखें।",
+    "lastAssistedLabel": "{date} को सहायता प्रदान की गई",
+    "reviewFamilySchemesBtn": "परिवार की योजनाएँ और परिणाम देखें",
+    "backToHelper": "परिवार लेज़र पर वापस जाएँ",
+    "backToWelcome": "मुख्य पृष्ठ पर वापस जाएँ",
+    "whereToGetMissingDocs": "लंबित दस्तावेज़ कहाँ से प्राप्त करें",
+    "noMissingDocs": "इस योजना के लिए आवश्यक सभी प्रमाण पत्र तैयार हैं।",
+    "resetSampleFamilies": "नमूना परिवार रीसेट करें"
   },
   "recovery": {
     "title": "प्रोफाइल उत्तर नहीं मिले",
@@ -193,5 +233,9 @@
     "notMatchingCriteria": "आवश्यक मानदंडों से मेल नहीं खाता: {failedRules}।",
     "needsVerification": "अंतिम निर्धारण से पहले इस योजना का आधिकारिक सत्यापन आवश्यक है।",
     "demoDisclaimer": "ये नियम केवल प्रदर्शन के लिए हैं और आधिकारिक नहीं हैं।"
+  },
+  "localeMeta": {
+    "nativeReviewNotice": "हिन्दी अनुवाद प्रारंभिक मसौदा है और आधिकारिक स्थानीय वक्ता समीक्षा के अधीन है।",
+    "nativeReviewBadge": "समीक्षा लंबित"
   }
 }

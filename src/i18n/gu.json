@@ -1,6 +1,7 @@
 {
   "banner": {
-    "prototypeNotice": "પ્રોટોટાઇપ: નમૂના ડેટા અને દસ્તાવેજ વાંચનનું સિમ્યુલેશન."
+    "prototypeNotice": "પ્રોટોટાઇપ: નમૂના ડેટા અને દસ્તાવેજ વાંચનનું સિમ્યુલેશન.",
+    "nativeReviewNotice": "ગુજરાતી લખાણ મૂળ વક્તાની સત્તાવાર સમીક્ષા હેઠળ છે."
   },
   "common": {
     "appName": "ગુજરાત યોજના સહાયક",
@@ -173,10 +174,49 @@
   },
   "helper": {
     "title": "સહાયક મોડ: લાભાર્થી પરિવારો",
-    "subtitle": "CSC, ઈ-ગ્રામ કે સમુદાય સહાયકો માટે સંમતિ સાથે પરિવારોને મદદ કરવાનો મોડ.",
+    "subtitle": "CSC ઓપરેટરો, ઈ-ગ્રામ મિત્ર અને સમુદાય સહાયકો માટે સંમતિ સાથે પરિવારોને મદદ કરવાનો કાર્યપ્રવાહ.",
     "screenedToday": "આજે તપાસેલા પરિવારો (નમૂના ડેટા)",
     "missingDocsNote": "દસ્તાવેજો બાકી છે",
-    "addFamilyBtn": "નવો પરિવાર ઉમેરો"
+    "addFamilyBtn": "નવો પરિવાર ઉમેરો",
+    "consentNoticeTitle": "લાભાર્થીની સંમતિ અનિવાર્ય છે",
+    "consentNoticeDesc": "પરિવારની વિગતો દાખલ કરતા પહેલા સહાયકે કુટુંબના વડા પાસેથી સ્પષ્ટ સંમતિ લેવી આવશ્યક છે. અહીં દર્શાવેલ તમામ પરિવારો કાલ્પનિક નમૂના ડેટા છે.",
+    "sampleDataBadge": "નમૂના ડેટા",
+    "metricsTitle": "તપાસણી સારાંશ (નમૂના ડેટા)",
+    "totalHouseholds": "તપાસેલા પરિવારો",
+    "totalMissingDocs": "કુલ બાકી દસ્તાવેજો",
+    "totalMembers": "સહાય મેળવનાર સભ્યો",
+    "ledgerTitle": "નમૂના પરિવારોનું લેજર",
+    "membersCount": "{count} કુટુંબના સભ્યો",
+    "headLabel": "કુટુંબના વડા: {name}",
+    "districtLabel": "જિલ્લો: {district}",
+    "primaryScheme": "મુખ્ય યોજના: {scheme}",
+    "missingDocsBadge": "{count} દસ્તાવેજો બાકી છે",
+    "allDocsReadyBadge": "તમામ દસ્તાવેજો તૈયાર છે",
+    "viewFamilyBtn": "પરિવારની વિગતો જુઓ",
+    "addFamilyModalTitle": "નવો પરિવાર ઉમેરો (માત્ર સ્થાનિક સત્ર)",
+    "addFamilyModalDesc": "આ ઉપકરણ પર સ્થાનિક રીતે નવો પરિવાર સાચવો. ક્લાઉડ સિંક કે સરકારી સર્વર પર મોકલવામાં આવતું નથી.",
+    "familyNameLabel": "પરિવાર અથવા કુટુંબનું નામ",
+    "familyNamePlaceholder": "દા.ત. ગોવિંદભાઈ પરમાર કુટુંબ",
+    "headNameLabel": "કુટુંબના વડાનું પૂરું નામ",
+    "headNamePlaceholder": "દા.ત. ગોવિંદભાઈ પરમાર",
+    "selectDistrictLabel": "ગુજરાતનો જિલ્લો",
+    "selectSchemeLabel": "લાગુ પડતી મુખ્ય યોજના",
+    "membersCountLabel": "પરિવારના સભ્યોની સંખ્યા",
+    "missingDocsCountLabel": "અંદાજિત બાકી દસ્તાવેજો",
+    "helperConsentCheckbox": "હું પુષ્ટિ કરું છું કે લાભાર્થી પરિવાર પાસેથી મૌખિક સંમતિ મેળવેલ છે.",
+    "saveHouseholdBtn": "સ્થાનિક રીતે સાચવો",
+    "cancelBtn": "રદ કરો",
+    "localRecordBadge": "સ્થાનિક કામચલાઉ નોંધણી",
+    "householdAddedSuccess": "પરિવાર સ્થાનિક લેજરમાં ઉમેરાયો છે. માત્ર આ બ્રાઉઝરમાં સંગ્રહિત છે.",
+    "familyDetailTitle": "પરિવાર સહાય અને યોજના સજ્જતા",
+    "familyDetailSubtitle": "આ પરિવાર માટે પાત્ર યોજનાઓ, બાકી દસ્તાવેજો અને માર્ગદર્શન ચકાસો.",
+    "lastAssistedLabel": "{date} ના રોજ સહાય કરેલ",
+    "reviewFamilySchemesBtn": "પરિવારની યોજનાઓ અને પરિણામો જુઓ",
+    "backToHelper": "પરિવાર લેજર પર પાછા જાઓ",
+    "backToWelcome": "મુખ્ય પૃષ્ઠ પર પાછા જાઓ",
+    "whereToGetMissingDocs": "બાકી દસ્તાવેજો ક્યાંથી મેળવવા",
+    "noMissingDocs": "આ યોજના માટે જરૂરી તમામ પ્રમાણપત્રો તૈયાર છે.",
+    "resetSampleFamilies": "મૂળ નમૂના પરિવારો પુનઃસ્થાપિત કરો"
   },
   "recovery": {
     "title": "પ્રોફાઇલ જવાબો મળ્યા નથી",
@@ -193,5 +233,9 @@
     "notMatchingCriteria": "જરૂરી માપદંડો સાથે મેળ ખાતું નથી: {failedRules}.",
     "needsVerification": "અંતિમ નિર્ણય પહેલાં આ યોજનાની સત્તાવાર ચકાસણી જરૂરી છે.",
     "demoDisclaimer": "આ નિયમો માત્ર નિદર્શન માટે છે અને સત્તાવાર નથી."
+  },
+  "localeMeta": {
+    "nativeReviewNotice": "ગુજરાતી અનુવાદ પ્રારંભિક મુસદ્દો છે, જે મૂળ ગુજરાતી વક્તાની સત્તાવાર સમીક્ષા હેઠળ છે.",
+    "nativeReviewBadge": "મૂળ વક્તા સમીક્ષા બાકી"
   }
 }

@@ -17,7 +17,7 @@ export const buttonVariants = cva(
       size: {
         default: 'h-[52px]',
         large: 'h-[60px] text-lg',
-        compact: 'h-[44px] text-sm px-4',
+        compact: 'min-h-[48px] h-[48px] text-sm px-4',
       },
       fullWidth: {
         true: 'w-full',
@@ -51,7 +51,7 @@ export const iconButtonVariants = cva(
       size: {
         default: 'w-12 h-12',
         large: 'w-16 h-16 [&>svg]:size-8',
-        compact: 'w-11 h-11 [&>svg]:size-5',
+        compact: 'w-12 h-12 [&>svg]:size-5',
       },
     },
     defaultVariants: {
