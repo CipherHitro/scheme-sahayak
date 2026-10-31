@@ -26,12 +26,12 @@ export function SchemeDetailPage() {
 
   const handleGoToDocuments = () => {
     setSelectedSchemeId(schemeId ?? null)
-    navigate(`/documents/${schemeId ?? 'scholarship-higher-education'}`)
+    navigate(`/documents/${schemeId ?? 'mysy'}`)
   }
 
   const handleGoToChecklist = () => {
     setSelectedSchemeId(schemeId ?? null)
-    navigate(`/checklist/${schemeId ?? 'scholarship-higher-education'}`)
+    navigate(`/checklist/${schemeId ?? 'mysy'}`)
   }
 
   return (

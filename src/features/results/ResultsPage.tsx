@@ -32,7 +32,7 @@ export function ResultsPage() {
           size="large"
           variant="primary"
           icon={<ArrowRight />}
-          onClick={() => handleOpenScheme('scholarship-higher-education')}
+          onClick={() => handleOpenScheme('mysy')}
         >
           View primary matched scheme
         </Button>
@@ -54,38 +54,38 @@ export function ResultsPage() {
         {/* Demo Scheme Rows */}
         <div className="bg-paper border border-line rounded-[14px] divide-y divide-line">
           <div
-            onClick={() => handleOpenScheme('scholarship-higher-education')}
+            onClick={() => handleOpenScheme('mysy')}
             className="p-4 hover:bg-salt transition-colors cursor-pointer space-y-2"
           >
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h2 className="font-semibold text-base text-neel">
-                  Post-Matric Higher Education Scholarship (Demo)
+                  Mukhyamantri Yuva Swavalamban Yojana (MYSY)
                 </h2>
                 <p className="text-xs text-ink-2">Education Department, Govt. of Gujarat</p>
               </div>
               <StatusBadge status="likely" />
             </div>
             <p className="text-xs text-ink-2">
-              Income certificate needed for final document readiness.
+              Income certificate and 80 percentile verification needed.
             </p>
           </div>
 
           <div
-            onClick={() => handleOpenScheme('mysy-gujarat')}
+            onClick={() => handleOpenScheme('pm-usp-csss')}
             className="p-4 hover:bg-salt transition-colors cursor-pointer space-y-2"
           >
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h2 className="font-semibold text-base text-neel">
-                  Mukhyamantri Yuva Swavalamban Yojana (MYSY Demo)
+                  PM-USP Central Sector Scheme of Scholarship (CSSS)
                 </h2>
-                <p className="text-xs text-ink-2">Higher Education Department</p>
+                <p className="text-xs text-ink-2">Department of Higher Education, Govt. of India</p>
               </div>
               <StatusBadge status="possibly" />
             </div>
             <p className="text-xs text-ink-2">
-              Requires 80 percentile verification in 12th board.
+              Requires top 20th percentile verification in Class 12.
             </p>
           </div>
         </div>
@@ -104,7 +104,7 @@ export function ResultsPage() {
             size="compact"
             variant="secondary"
             icon={<FileText />}
-            onClick={() => handleOpenScheme('scholarship-higher-education')}
+            onClick={() => handleOpenScheme('mysy')}
           >
             Open detail
           </Button>
